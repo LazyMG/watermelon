@@ -1,10 +1,10 @@
 {
-  "name": "watermelon",
+  "name": "watermelon-music",
   "version": "1.0.0",
   "description": "music",
   "main": "index.js",
   "scripts": {
-    "start": "node build/init.js"
+    "dev": "nodemon --exec babel-node src/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "@babel/cli": "^7.22.9",
     "@babel/core": "^7.22.9",
     "@babel/node": "^7.22.5",
     "@babel/preset-env": "^7.22.5"
