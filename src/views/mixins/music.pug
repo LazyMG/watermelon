@@ -3,4 +3,4 @@ mixin musicComponent(music)
       h3=music.title 
       ul 
         li Singer: #{music.singer}
-        li Duration: #{music.duration}
+        img(src=`${music.coverImg}`)

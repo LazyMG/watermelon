@@ -1,0 +1,10 @@
+extends layout.pug 
+include mixins/music.pug
+
+block content 
+  h1 Search 
+  div 
+    each music in musics 
+      +musicComponent(music)
+    else 
+      h3 Sorry. No found.

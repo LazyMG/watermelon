@@ -3,8 +3,12 @@ include mixins/music.pug
 
 block content 
   h1 Home
+  include partials/form.pug
   div 
     each music in musics 
       +musicComponent(music)
     else 
       h3 Sorry. No found.
+
+  //- a(href=`/music/${music.title}`)
+  //- 백틱, # 대신에 $ 사용
