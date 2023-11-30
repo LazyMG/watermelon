@@ -1,3 +1,7 @@
 form(action="/search")
   input(name="keyword",placeholder="Search")
   input(type="submit", value="Search")
+
+  //- 검색하는 방법: input에 name 쓰기
+  //-               form에 action url 입력
+  //-               express에서 req.query로 검색어 찾기
