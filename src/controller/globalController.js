@@ -13,3 +13,12 @@ export const search = (req, res) => {
   //검색할 때 가수나 제목으로 찾기
   res.render("search", { pageTitle: "Search", musics });
 };
+
+export const addPage = (req, res) => {
+  res.render("addPage", { pageTitle: "Add" });
+};
+
+export const postAdd = (req, res) => {
+  const { title, singer } = req.body;
+  res.redirect("/");
+};
