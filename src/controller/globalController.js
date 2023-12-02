@@ -19,6 +19,6 @@ export const addPage = (req, res) => {
 };
 
 export const postAdd = (req, res) => {
-  const { title, singer } = req.body;
+  const { title, singer } = req.body; //input의 name으로 찾음
   res.redirect("/");
 };
