@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import globalRouter from "./router/globalRouter";
+import "./db";
+import "./models/Music";
 
 const PORT = 4000;
 const app = express();
