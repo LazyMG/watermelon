@@ -3,7 +3,6 @@ include mixins/music.pug
 
 block content 
   h1 Home
-  include partials/getForm.pug
   div 
     each music in musics 
       +musicComponent(music)

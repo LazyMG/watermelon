@@ -4,6 +4,7 @@ include mixins/music.pug
 block content 
   h1 Search 
   div 
+    include partials/getForm.pug
     each music in musics 
       +musicComponent(music)
     else 

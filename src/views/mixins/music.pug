@@ -1,6 +1,7 @@
 mixin musicComponent(music)
   div
-      h3=music.title 
+      h3
+        a(href=`/music/${music.id}`)=music.title 
       ul 
         li Singer: #{music.singer}
         img(src=`${music.coverImg}`)

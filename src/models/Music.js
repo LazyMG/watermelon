@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
 
 const musicSchema = new mongoose.Schema({
-  title: String,
-  titleEng: String,
-  singer: String,
-  singerEng: String,
-  albumTitle: String,
-  createdAt: Date,
+  title: { type: String, require: true },
+  titleEng: { type: String, default: "" },
+  singer: { type: String, require: true },
+  singerEng: { type: String, default: "" },
+  albumTitle: { type: String, require: true },
+  albumTitleEng: { type: String, default: "" },
+  createdAt: { type: Date, default: Date.now },
   coverImg: String,
   meta: {
-    views: Number,
-    rating: Number,
+    views: { type: Number, default: 0 },
+    rating: { type: Number, default: 0 },
   },
 });
 

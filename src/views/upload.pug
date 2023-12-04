@@ -1,5 +1,7 @@
 extends layout.pug
 
 block content 
-  h1 Add
+  h1 Upload
+  if error 
+    span=error
   include partials/postForm.pug
