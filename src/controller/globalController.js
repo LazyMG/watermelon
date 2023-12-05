@@ -46,3 +46,22 @@ export const musicDetail = async (req, res) => {
 
   return res.render("detail", { pageTitle: `${music.title}`, music });
 };
+
+export const getEdit = async (req, res) => {
+  const { id } = req.params;
+  const music = await Music.findById(id);
+  if (!music) return res.redirect(`/music/${id}`);
+  return res.render("edit", { pageTitle: "Edit", music });
+};
+
+export const postEdit = async (req, res) => {
+  const { id } = req.params;
+  const { title, singer, albumTitle, coverImg } = req.body;
+  await Music.findByIdAndUpdate(id, {
+    title,
+    singer,
+    albumTitle,
+    coverImg,
+  });
+  return res.redirect("/");
+};

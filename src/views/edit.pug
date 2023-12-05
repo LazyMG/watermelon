@@ -1,0 +1,10 @@
+extends layout.pug
+
+block content 
+  h1=pageTitle
+  form(method="POST")
+    input(value=music.title,name="title",placeholder="Title", required)
+    input(value=music.singer,name="singer",placeholder="Singer",required)
+    input(value=music.albumTitle,name="albumTitle",placeholder="Album Title",required)
+    input(value=music.coverImg,name="coverImg",placeholder="Cover Image Url",required)
+    input(type="submit", value="Edit")

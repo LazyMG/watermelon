@@ -5,6 +5,6 @@ block content
   h3 가수: #{music.singer}
   h3 앨범명: #{music.albumTitle}
   img(src=`${music.coverImg}`)
-  a(href="") Edit Music &rarr; 
+  a(href=`/music/${music.id}/edit`) Edit Music &rarr; 
   br
   a(href="") Delete Music &rarr;
