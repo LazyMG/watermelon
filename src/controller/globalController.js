@@ -7,15 +7,31 @@ export const home = async (req, res) => {
   res.render("home", { pageTitle: "Home", musics });
 };
 
-export const search = (req, res) => {
-  const { keyword } = req.query;
-  const musics = getMusics().filter(
-    (music) =>
-      music.singer.includes(keyword) || music.singerEng.includes(keyword)
-  );
+export const search = async (req, res) => {
+  const { keyword, search } = req.query;
+  let musics = [];
+  if (keyword && search === "title") {
+    musics = await Music.find({
+      title: {
+        $regex: new RegExp(keyword, "i"),
+      },
+    });
+  } else if (keyword && search === "singer") {
+    musics = await Music.find({
+      singer: {
+        $regex: new RegExp(keyword, "i"),
+      },
+    });
+  } else {
+    return res.render("search", { pageTitle: "Search" });
+  }
+
+  // const musics = getMusics().filter(
+  //   (music) =>
+  //     music.singer.includes(keyword) || music.singerEng.includes(keyword)
+  // );
   //원하는 배열
-  //검색할 때 가수나 제목으로 찾기
-  res.render("search", { pageTitle: "Search", musics });
+  return res.render("search", { pageTitle: "Search", musics });
 };
 
 export const getUpload = (req, res) => {
@@ -63,5 +79,11 @@ export const postEdit = async (req, res) => {
     albumTitle,
     coverImg,
   });
+  return res.redirect("/");
+};
+
+export const deleteMusic = async (req, res) => {
+  const { id } = req.params;
+  await Music.findByIdAndDelete(id);
   return res.redirect("/");
 };
