@@ -136,6 +136,18 @@ export const getLogin = (req, res) => {
   return res.render("login", { pageTitle: "Login" });
 };
 
-export const postLogin = (req, res) => {
-  return res.end();
+export const postLogin = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+  if (!user)
+    return res.render("login", { pageTitle: "Login", errorMessage: "No User" });
+  if (password !== user.password)
+    return res.render("login", {
+      pageTitle: "Login",
+      errorMessage: "Wrong Password",
+    });
+  req.session.loggedIn = true;
+  req.session.user = user;
+
+  return res.redirect("/");
 };
