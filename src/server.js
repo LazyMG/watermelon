@@ -4,6 +4,8 @@ import globalRouter from "./router/globalRouter";
 import "./db";
 import "./models/Music";
 import session from "express-session";
+import { musicRouter } from "./router/musicRouter";
+import { userRouter } from "./router/userRouter";
 
 const app = express();
 
@@ -28,5 +30,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/", globalRouter);
+app.use("/music", musicRouter);
+app.use("/user", userRouter);
 
 export default app;
