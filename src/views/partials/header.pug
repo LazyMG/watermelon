@@ -6,3 +6,13 @@ nav
       a(href="/upload") Upload
     li
       a(href="/search") Search
+    if loggedIn 
+      li
+        a(href=`/user/${user.id}`) Profile
+      li
+        a(href="/logout") Logout
+    else 
+      li 
+        a(href="/join") Join
+      li 
+        a(href="/login") Login

@@ -64,3 +64,9 @@ export const postLogin = async (req, res) => {
 
   return res.redirect("/");
 };
+
+export const profile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  return res.render("profile", { pageTitle: "Profile" });
+};
