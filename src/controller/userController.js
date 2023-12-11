@@ -61,11 +61,12 @@ export const postLogin = async (req, res) => {
     });
   req.session.loggedIn = true;
   req.session.user = user;
-
+  console.log(req.session);
   return res.redirect("/");
 };
 
 export const profile = async (req, res) => {
+  console.log("proflie", req.session);
   const { id } = req.params;
   const user = await User.findById(id);
   return res.render("profile", { pageTitle: "Profile" });

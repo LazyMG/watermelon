@@ -1,3 +1,4 @@
+import "dotenv/config";
 import "./db";
 import "./models/Music";
 import "./models/User";
