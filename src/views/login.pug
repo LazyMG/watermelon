@@ -9,5 +9,11 @@ block content
     input(type="password",name="password", required, placeholder="Password")
     input(type="submit",value="Login")
   hr
-  span If you need an account 
-  a(href="/join") &rarr;
+  div
+    span If you need an account 
+    a(href="/join") &rarr;
+  div
+    a(href=`https://accounts.google.com/o/oauth2/auth?client_id=${googleId}&redirect_uri=${googleRedirectionUrl}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`) Google
+    //- span If you want use an  Google account 
+    //- a(href="/login-google") &rarr;
+  //- script(src="/login.js") 

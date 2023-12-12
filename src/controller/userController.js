@@ -46,7 +46,11 @@ export const postJoin = async (req, res) => {
 
 // /login
 export const getLogin = (req, res) => {
-  return res.render("login", { pageTitle: "Login" });
+  return res.render("login", {
+    pageTitle: "Login",
+    googleId: process.env.GOOGLE_CLIENT_ID,
+    googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
+  });
 };
 
 export const postLogin = async (req, res) => {
@@ -61,13 +65,50 @@ export const postLogin = async (req, res) => {
     });
   req.session.loggedIn = true;
   req.session.user = user;
-  console.log(req.session);
+  return res.redirect("/");
+};
+
+export const getGoogleLogin = (req, res) => {
+  return res.render("googleLogin");
+};
+
+export const postGoogleLogin = async (req, res) => {
+  const { accessToken } = req.body;
+  let info;
+  try {
+    info = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    });
+  } catch (error) {
+    // 오류 처리
+    console.error("Error fetching user info:", error);
+  }
+  req.session.loggedIn = true;
+  req.session.user = {
+    email: info.email + "/google",
+    _id: info.id + "google",
+    username: info.name,
+    password: "/google",
+    name: info.name,
+    __v: info.id + "google",
+  };
   return res.redirect("/");
 };
 
 export const profile = async (req, res) => {
-  console.log("proflie", req.session);
   const { id } = req.params;
+  if (id.endsWith("google")) {
+    return res.render("profile", { pageTitle: "Profile" });
+  }
   const user = await User.findById(id);
   return res.render("profile", { pageTitle: "Profile" });
 };
