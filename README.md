@@ -5,3 +5,11 @@
 //플레이리스트 + 유튜브
 //크롤링
 //꾸미기, 반응형
+
+## /upload, /detail, /edit, /delete, /login 삭제 필요
+
+### 로그인은 구글 로그인만 사용
+
+### 10곡 정도 저장하고 admin 관련 막기
+
+#### -webkit-box-reflect: below -59px linear-gradient(transparent, transparent, black);

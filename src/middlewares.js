@@ -21,3 +21,11 @@ export const publicOnlyMiddleware = (req, res, next) => {
     return res.redirect("/");
   }
 };
+
+export const adminOnlyMiddleware = (req, res, next) => {
+  if (!req.session.user.admin) {
+    return res.redirect("/");
+  } else {
+    return next();
+  }
+};

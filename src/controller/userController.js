@@ -35,11 +35,20 @@ export const postJoin = async (req, res) => {
       errorMessage: "Already taken Username / Email",
     });
 
+  let admin;
+
+  if (email === process.env.ADMIN_EMAIL) {
+    admin = true;
+  } else {
+    admin = false;
+  }
+
   await User.create({
     email,
     username,
     password,
     name,
+    admin,
   });
   return res.redirect("/login");
 };
@@ -91,16 +100,31 @@ export const postGoogleLogin = async (req, res) => {
   } catch (error) {
     // 오류 처리
     console.error("Error fetching user info:", error);
+    return res.render("login", { pageTitle: "Login", errorMessage: error });
+  }
+  const exists = await User.exists({ email: info.email + "/google" });
+  let user;
+  let admin;
+  if (!exists) {
+    if (info.email === process.env.ADMIN_EMAIL) {
+      admin = true;
+    } else {
+      admin = false;
+    }
+    user = await User.create({
+      email: info.email + "/google",
+      username: info.name,
+      password: "/google",
+      name: info.name,
+      admin,
+    });
+  } else {
+    user = await User.findOne({
+      email: info.email + "/google",
+    });
   }
   req.session.loggedIn = true;
-  req.session.user = {
-    email: info.email + "/google",
-    _id: info.id + "google",
-    username: info.name,
-    password: "/google",
-    name: info.name,
-    __v: info.id + "google",
-  };
+  req.session.user = user;
   return res.redirect("/");
 };
 
@@ -111,4 +135,9 @@ export const profile = async (req, res) => {
   }
   const user = await User.findById(id);
   return res.render("profile", { pageTitle: "Profile" });
+};
+
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
 };
