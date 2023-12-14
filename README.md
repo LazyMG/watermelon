@@ -12,4 +12,6 @@
 
 ### 10곡 정도 저장하고 admin 관련 막기
 
+### 231214 플레이어 구현 완료 -> html 틀 수정해서 css 적용하기
+
 #### -webkit-box-reflect: below -59px linear-gradient(transparent, transparent, black);

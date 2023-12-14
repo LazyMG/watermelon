@@ -35,4 +35,8 @@ app.use("/", globalRouter);
 app.use("/music", musicRouter);
 app.use("/user", userRouter);
 
+app.get("/main", (req, res) => {
+  return res.render("main");
+});
+
 export default app;

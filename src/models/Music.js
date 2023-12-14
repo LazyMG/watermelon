@@ -9,6 +9,7 @@ const musicSchema = new mongoose.Schema({
   albumTitleEng: { type: String, default: "" },
   createdAt: { type: Date, default: Date.now },
   coverImg: String,
+  ytId: { type: String, default: "" },
   meta: {
     views: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },

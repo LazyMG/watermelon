@@ -1,5 +1,5 @@
 import express from "express";
-import { home } from "../controller/globalController";
+import { home, play } from "../controller/globalController";
 import {
   getGoogleLogin,
   getJoin,
@@ -20,6 +20,7 @@ export const globalRouter = express.Router();
 
 globalRouter.get("/", home);
 globalRouter.get("/search", search);
+globalRouter.get("/play", play);
 globalRouter
   .route("/upload")
   .all(adminOnlyMiddleware)

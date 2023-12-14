@@ -5,6 +5,9 @@ block content
   h3 가수: #{music.singer}
   h3 앨범명: #{music.albumTitle}
   img(src=`${music.coverImg}`)
+  iframe#ytplayer(type="text/html" width="720" height="405"
+src=`https://www.youtube.com/embed/${music.ytId}?autoplay=1`
+frameborder="0" allowfullscreen)
   a(href=`/music/${music.id}/edit`) Edit Music &rarr; 
   br
   a(href=`/music/${music.id}/delete`) Delete Music &rarr;

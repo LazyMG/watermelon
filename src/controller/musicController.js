@@ -35,7 +35,6 @@ export const getUpload = (req, res) => {
 
 export const postUpload = async (req, res) => {
   const { title, singer, albumTitle, coverImg } = req.body; //input의 name으로 찾음
-  console.log(title, singer, albumTitle, coverImg);
   try {
     await Music.create({
       title,
@@ -50,9 +49,10 @@ export const postUpload = async (req, res) => {
   return res.redirect("/");
 };
 
-// /movie/:id
+// /music/:id
 export const musicDetail = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const music = await Music.findById(id);
   if (!music) return res.redirect("/");
 
@@ -69,14 +69,27 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title, singer, albumTitle, coverImg } = req.body;
+  const {
+    title,
+    singer,
+    albumTitle,
+    coverImg,
+    titleEng,
+    singerEng,
+    albumTitleEng,
+    ytId,
+  } = req.body;
   await Music.findByIdAndUpdate(id, {
     title,
     singer,
     albumTitle,
     coverImg,
+    titleEng,
+    singerEng,
+    albumTitleEng,
+    ytId,
   });
-  return res.redirect("/");
+  return res.redirect(`/music/${id}`);
 };
 
 // /movie/:id/delete
