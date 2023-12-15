@@ -15,3 +15,5 @@
 ### 231214 플레이어 구현 완료 -> html 틀 수정해서 css 적용하기
 
 #### -webkit-box-reflect: below -59px linear-gradient(transparent, transparent, black);
+
+#### webpack, webpack-cli -> 프론트엔드 설정
