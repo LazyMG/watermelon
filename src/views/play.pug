@@ -3,9 +3,12 @@ include mixins/music.pug
 
 block content 
   h1 Play
-  div#player(style="display:none;")
+  //- div#player(style="display:none;")
+  div#player
+
   button#playBtn.play Play
   button#stopBtn Stop
+  input(type="range" step="1" min="0" max="100" value="50")#volume
   div 
     each music in musics 
       div.musicContainer(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer)

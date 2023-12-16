@@ -1,11 +1,13 @@
 const tag = document.createElement("script");
 const playBtn = document.getElementById("playBtn");
 const stopBtn = document.getElementById("stopBtn");
+const volumeRange = document.getElementById("volume");
 
 const musicContainer = document.querySelectorAll(".musicContainer");
 const musicContainerArray = [...musicContainer];
 
 let ytId = "";
+let volumeValue = volumeRange.value;
 
 musicContainerArray.forEach((element) => {
   element.querySelector("#musicTitle").addEventListener("click", () => {
@@ -39,6 +41,13 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+const handleVolume = () => {
+  volumeValue = volumeRange.value;
+  player.setVolume(volumeValue);
+  console.log("input", player.getVolume());
+};
+volumeRange.addEventListener("input", handleVolume);
+
 function updatePlayerWithNewId(newYtId) {
   if (player) {
     // 이미 생성된 플레이어가 있다면 멈추고 제거
@@ -63,6 +72,7 @@ function updatePlayerWithNewId(newYtId) {
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
   event.target.playVideo();
+  event.target.setVolume(volumeValue);
 }
 
 // 5. The API calls this function when the player's state changes.
@@ -89,6 +99,7 @@ const pauseLogic = () => {
   playBtn.textContent = "Play";
 };
 playBtn.addEventListener("click", () => {
+  if (ytId === "") return;
   if (playBtn.className === "play") {
     playLogic();
     player.playVideo();

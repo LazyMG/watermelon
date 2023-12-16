@@ -17,3 +17,13 @@
 #### -webkit-box-reflect: below -59px linear-gradient(transparent, transparent, black);
 
 #### webpack, webpack-cli -> 프론트엔드 설정
+
+#### 추가 버튼 클릭하면 음악이 리스트에 추가, 삭제 버튼 클릭하면 음악이 리스트에서 삭제
+
+#### -> 음악이 유저의 리스트에 추가 및 삭제되어야 함 -> 따로따로 하면 되겠다!
+
+#### -> 버튼을 클릭하면 서버대로 DB에서 추가 및 삭제하고, 클라이언트에서도 html 넣고빼기 하면 되겠다!
+
+#### -> 처음에 리스트 보여 줄 때 유저 리스트에서 뽑아 오기
+
+#### -> wetube comment 섹션 참고하자
