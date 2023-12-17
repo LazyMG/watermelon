@@ -1,13 +1,17 @@
 const tag = document.createElement("script");
 const playBtn = document.getElementById("playBtn");
 const stopBtn = document.getElementById("stopBtn");
+const muteBtn = document.getElementById("muteBtn");
 const volumeRange = document.getElementById("volume");
+const durationRange = document.getElementById("duration");
+const timeText = document.getElementById("time");
 
 const musicContainer = document.querySelectorAll(".musicContainer");
 const musicContainerArray = [...musicContainer];
 
 let ytId = "";
 let volumeValue = volumeRange.value;
+let isMute = false;
 
 musicContainerArray.forEach((element) => {
   element.querySelector("#musicTitle").addEventListener("click", () => {
@@ -44,9 +48,39 @@ function onYouTubeIframeAPIReady() {
 const handleVolume = () => {
   volumeValue = volumeRange.value;
   player.setVolume(volumeValue);
-  console.log("input", player.getVolume());
+  if (volumeValue === "0") {
+    muteBtn.innerText = "Unmute";
+    isMute = true;
+  } else {
+    player.unMute();
+    muteBtn.innerText = "Mute";
+    isMute = false;
+  }
 };
 volumeRange.addEventListener("input", handleVolume);
+
+const handleMute = () => {
+  console.log(player);
+  if (player.isMuted() && volumeValue !== "0") {
+    player.unMute();
+    player.setVolume(volumeValue);
+    volumeRange.value = volumeValue;
+    muteBtn.innerText = "Mute";
+    isMute = false;
+  } else {
+    volumeValue = volumeRange.value;
+    volumeRange.value = 0;
+    player.mute();
+    muteBtn.innerText = "Unmute";
+    isMute = true;
+  }
+};
+muteBtn.addEventListener("click", handleMute);
+
+const handleDuration = () => {
+  console.log(player.getCurrentTime());
+  console.log(player.getDuration());
+};
 
 function updatePlayerWithNewId(newYtId) {
   if (player) {
@@ -73,6 +107,11 @@ function updatePlayerWithNewId(newYtId) {
 function onPlayerReady(event) {
   event.target.playVideo();
   event.target.setVolume(volumeValue);
+  if (isMute) {
+    event.target.mute();
+  } else {
+    event.target.unMute();
+  }
 }
 
 // 5. The API calls this function when the player's state changes.

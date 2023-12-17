@@ -8,7 +8,10 @@ block content
 
   button#playBtn.play Play
   button#stopBtn Stop
+  button#muteBtn.mute Mute
   input(type="range" step="1" min="0" max="100" value="50")#volume
+  input(type="range" value="0")#duration
+  span#time 00:00/00:00 
   div 
     each music in musics 
       div.musicContainer(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer)
