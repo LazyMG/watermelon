@@ -3,8 +3,9 @@ const playBtn = document.getElementById("playBtn");
 const stopBtn = document.getElementById("stopBtn");
 const muteBtn = document.getElementById("muteBtn");
 const volumeRange = document.getElementById("volume");
+const currentTime = document.getElementById("currentTime");
+const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
-const timeText = document.getElementById("time");
 
 const musicContainer = document.querySelectorAll(".musicContainer");
 const musicContainerArray = [...musicContainer];
@@ -12,19 +13,16 @@ const musicContainerArray = [...musicContainer];
 let ytId = "";
 let volumeValue = volumeRange.value;
 let isMute = false;
+let settingTime = 0;
 
 musicContainerArray.forEach((element) => {
   element.querySelector("#musicTitle").addEventListener("click", () => {
     const newId = element.dataset.ytid;
     playLogic();
     updatePlayerWithNewId(newId);
+    console.log(player);
   });
 });
-
-// musicTitle.addEventListener("click", () => {
-//   ytId = musicYtId.innerText;
-//   console.log(ytId);
-// });
 
 tag.src = "https://www.youtube.com/iframe_api";
 const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -45,6 +43,17 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+function updateCurrentTime() {
+  if (player && typeof player.getCurrentTime === "function") {
+    const currentTimeFormatted = new Date(player.getCurrentTime() * 1000)
+      .toISOString()
+      .substring(14, 19);
+    currentTime.innerText = currentTimeFormatted;
+  }
+  // 다음 리페인트 전에 업데이트 요청
+  requestAnimationFrame(updateCurrentTime);
+}
+
 const handleVolume = () => {
   volumeValue = volumeRange.value;
   player.setVolume(volumeValue);
@@ -60,7 +69,6 @@ const handleVolume = () => {
 volumeRange.addEventListener("input", handleVolume);
 
 const handleMute = () => {
-  console.log(player);
   if (player.isMuted() && volumeValue !== "0") {
     player.unMute();
     player.setVolume(volumeValue);
@@ -76,11 +84,6 @@ const handleMute = () => {
   }
 };
 muteBtn.addEventListener("click", handleMute);
-
-const handleDuration = () => {
-  console.log(player.getCurrentTime());
-  console.log(player.getDuration());
-};
 
 function updatePlayerWithNewId(newYtId) {
   if (player) {
@@ -98,7 +101,7 @@ function updatePlayerWithNewId(newYtId) {
     videoId: ytId,
     events: {
       onReady: onPlayerReady,
-      //onStateChange: onPlayerStateChange,
+      onStateChange: onPlayerStateChange,
     },
   });
 }
@@ -112,16 +115,34 @@ function onPlayerReady(event) {
   } else {
     event.target.unMute();
   }
+  if (event.target.videoTitle) {
+    const formatedTime = new Date(event.target.getDuration() * 1000)
+      .toISOString()
+      .substring(14, 19);
+    totalTime.innerText = formatedTime;
+    durationRange.max = Math.floor(event.target.getDuration());
+  }
+  requestAnimationFrame(updateCurrentTime);
 }
 
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
-let done = false;
+let intervalId;
 function onPlayerStateChange(event) {
-  if (event.data == YT.PlayerState.PLAYING && !done) {
-    setTimeout(stopVideo, 6000);
-    done = true;
+  if (event.data == YT.PlayerState.PLAYING) {
+    // 기존에 실행 중인 setInterval이 있다면 중지
+    clearInterval(intervalId);
+
+    // 매초마다 동영상의 현재 시간을 확인하는 setInterval 시작
+    intervalId = setInterval(() => {
+      const currentTime = player.getCurrentTime();
+      console.log("Current Time:", Math.round(currentTime));
+      durationRange.value = currentTime;
+    }, 1000);
+  } else {
+    // 플레이어가 일시정지 상태라면 setInterval 중지
+    clearInterval(intervalId);
   }
 }
 function stopVideo() {
@@ -150,4 +171,15 @@ playBtn.addEventListener("click", () => {
 stopBtn.addEventListener("click", () => {
   player.stopVideo();
   pauseLogic();
+});
+durationRange.addEventListener("change", (event) => {
+  const {
+    target: { value },
+  } = event;
+  if (player.videoTitle) {
+    player.seekTo(value, true);
+  } else {
+    event.target.value = 0;
+    return;
+  }
 });

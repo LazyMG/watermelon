@@ -10,15 +10,19 @@ block content
   button#stopBtn Stop
   button#muteBtn.mute Mute
   input(type="range" step="1" min="0" max="100" value="50")#volume
-  input(type="range" value="0")#duration
-  span#time 00:00/00:00 
   div 
-    each music in musics 
-      div.musicContainer(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer)
-        h3#musicTitle=music.title 
-        ul 
-          li Singer: #{music.singer}
-          img(src=`${music.coverImg}`)
-    else 
-      h3 Sorry. No found.
+    span#currentTime 00:00
+    span  / 
+    span#totalTime 00:00 
+  div 
+  input(type="range" step="1" value="0" min="0")#duration
+
+  each music in musics 
+    div.musicContainer(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer)
+      h3#musicTitle=music.title 
+      ul 
+        li Singer: #{music.singer}
+        img(src=`${music.coverImg}`)
+  else 
+    h3 Sorry. No found.
   script(src="/playMusic.js") 
