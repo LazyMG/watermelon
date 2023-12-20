@@ -1,0 +1,8 @@
+mixin recommend__music(music)
+  .main__container__recommend__music.music(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer,data-coverImg=music.coverImg)
+    img.main__container__recommend__music__img(src=`${music.coverImg}`)
+    .main__container__recommend__music__info 
+      .main__container__recommend__music__title 
+        span=music.title
+      .main__container__recommend__music__singer
+        span=music.singer

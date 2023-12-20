@@ -1,0 +1,21 @@
+include ../mixins/recent__music
+include ../mixins/recommend__music
+
+.main
+  .main__container
+    .main__container__header
+      .main__container__search
+        input(placeholder="노래,앨범,아티스트 검색").search
+    .main__container__contents 
+      .main__container__recent
+        .main__container__recent__header 
+          span.main__container__recent__header__title 다시 듣기
+        .main__container__recent__music-container
+          each music in recentMusics 
+            +recent__music(music)
+      .main__container__recommend
+        .main__container__recommend__header
+          span.main__container__recommend__header__title 추천 음악
+        .main__container__recommend__music-container
+          each music in allMusics 
+            +recommend__music(music)

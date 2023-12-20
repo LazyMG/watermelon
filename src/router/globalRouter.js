@@ -1,5 +1,5 @@
 import express from "express";
-import { home, play } from "../controller/globalController";
+import { home, main, play } from "../controller/globalController";
 import {
   getGoogleLogin,
   getJoin,
@@ -42,5 +42,6 @@ globalRouter
   .get(getGoogleLogin)
   .post(postGoogleLogin);
 globalRouter.get("/logout", protectMiddleware, logout);
+globalRouter.get("/main", main);
 
 export default globalRouter;

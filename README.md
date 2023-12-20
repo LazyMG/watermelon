@@ -27,3 +27,5 @@
 #### -> 처음에 리스트 보여 줄 때 유저 리스트에서 뽑아 오기
 
 #### -> wetube comment 섹션 참고하자
+
+#### class="fas fa-play" / class="fas fa-volume-up" / "fas fa-volume-mute" / "fas fa-pause"

@@ -1,20 +1,23 @@
-doctype html
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Document
-    link(href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css" rel="stylesheet")
-    link(rel="stylesheet", href="/static/css/styles.css")
-  body 
-    #page
-      #sidebar 
-      #main
-        #header
-          #search 
-          #profile
-        #contents 
-          #recent 
-          #recommend
-      #player
-    script(src="/static/js/main.js") 
+extends base.pug
+
+block content
+  #player
+  .page
+    include partials/sidebar
+    include partials/main
+  .player.hide#play-bar
+    .player__range
+      input(type="range", value="0")#duration
+    .player__container#player__container
+      .player__control#player__control
+        .play__control__controller
+          .player__control__back B
+          .player__control__play.play P
+          .player__control__forward F
+        .player__control__time
+          span.player__control__time__current#currentTime 00:00
+          span  / 
+          span.player__control__time__total#totalTime 00:00
+      .player__function
+        .player__volume V 
+        .player__add-list +

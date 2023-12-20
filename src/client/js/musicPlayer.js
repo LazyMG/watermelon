@@ -1,31 +1,71 @@
-const tag = document.createElement("script");
-const playBtn = document.getElementById("playBtn");
-const stopBtn = document.getElementById("stopBtn");
-const muteBtn = document.getElementById("muteBtn");
-const volumeRange = document.getElementById("volume");
+const playContainer = document.getElementById("player__container");
+const playControl = document.getElementById("player__control");
+const playBar = document.getElementById("play-bar");
+
+const musicComponent = document.querySelectorAll(".music");
+const musicComponentArray = [...musicComponent];
+
+const playBtn = document.querySelector(".player__control__play");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
 
-const musicContainer = document.querySelectorAll(".musicContainer");
-const musicContainerArray = [...musicContainer];
-
-let ytId = "";
-let volumeValue = volumeRange.value;
 let isMute = false;
 let loading = false;
+let ytId = "";
 
-musicContainerArray.forEach((element) => {
-  element.querySelector("#musicTitle").addEventListener("click", () => {
+const createPlayBarContent = (dataset) => {
+  if (document.querySelector(".player__music")) {
+    document.querySelector(".player__music").remove();
+  }
+  const playerMusic = document.createElement("div");
+  playerMusic.classList.add("player__music");
+
+  // 자식 요소들 생성
+  const musicImg = document.createElement("img");
+  musicImg.classList.add("player__music__img");
+  musicImg.src = dataset.coverimg;
+
+  const musicInfo = document.createElement("div");
+  musicInfo.classList.add("player__music__info");
+
+  const musicTitle = document.createElement("div");
+  musicTitle.classList.add("player__music__title");
+  const titleSpan = document.createElement("span");
+  titleSpan.textContent = dataset.title;
+  musicTitle.appendChild(titleSpan);
+
+  const musicSinger = document.createElement("div");
+  musicSinger.classList.add("player__music__singer");
+  const singerSpan = document.createElement("span");
+  singerSpan.textContent = dataset.singer;
+  musicSinger.appendChild(singerSpan);
+
+  // 각 요소들을 연결
+  musicInfo.appendChild(musicTitle);
+  musicInfo.appendChild(musicSinger);
+
+  playerMusic.appendChild(musicImg);
+  playerMusic.appendChild(musicInfo);
+
+  playControl.parentNode.insertBefore(playerMusic, playControl.nextSibling);
+};
+
+musicComponentArray.forEach((element) => {
+  element.addEventListener("click", () => {
+    durationRange.value = "0";
     if (!loading) {
       const newId = element.dataset.ytid;
+      createPlayBarContent(element.dataset);
       playLogic();
       loading = true;
       updatePlayerWithNewId(newId);
+      playBar.classList.remove("hide");
     }
-    console.log(player);
   });
 });
+
+const tag = document.createElement("script");
 
 tag.src = "https://www.youtube.com/iframe_api";
 const firstScriptTag = document.getElementsByTagName("script")[0];
@@ -54,37 +94,6 @@ function updateCurrentTime() {
   requestAnimationFrame(updateCurrentTime);
 }
 
-const handleVolume = () => {
-  volumeValue = volumeRange.value;
-  player.setVolume(volumeValue);
-  if (volumeValue === "0") {
-    muteBtn.innerText = "Unmute";
-    isMute = true;
-  } else {
-    player.unMute();
-    muteBtn.innerText = "Mute";
-    isMute = false;
-  }
-};
-volumeRange.addEventListener("input", handleVolume);
-
-const handleMute = () => {
-  if (player.isMuted() && volumeValue !== "0") {
-    player.unMute();
-    player.setVolume(volumeValue);
-    volumeRange.value = volumeValue;
-    muteBtn.innerText = "Mute";
-    isMute = false;
-  } else {
-    volumeValue = volumeRange.value;
-    volumeRange.value = 0;
-    player.mute();
-    muteBtn.innerText = "Unmute";
-    isMute = true;
-  }
-};
-muteBtn.addEventListener("click", handleMute);
-
 function updatePlayerWithNewId(newYtId) {
   if (player) {
     player.stopVideo();
@@ -106,7 +115,7 @@ function updatePlayerWithNewId(newYtId) {
 
 function onPlayerReady(event) {
   event.target.playVideo();
-  event.target.setVolume(volumeValue);
+  //event.target.setVolume(volumeValue);
   if (isMute) {
     event.target.mute();
   } else {
@@ -134,27 +143,28 @@ function onPlayerStateChange(event) {
       //console.log("Current Time:", Math.round(playerCurrentTime));
       durationRange.value = playerCurrentTime;
     }, 1000);
-    event.target.setVolume(volumeValue);
+    //event.target.setVolume(volumeValue);
   } else {
     clearInterval(intervalId);
   }
 }
+
 function stopVideo() {
   player.stopVideo();
 }
 const playLogic = () => {
   playBtn.classList.remove("play");
   playBtn.classList.add("pause");
-  playBtn.textContent = "Pause";
+  //playBtn.textContent = "Pause";
 };
 const pauseLogic = () => {
   playBtn.classList.remove("pause");
   playBtn.classList.add("play");
-  playBtn.textContent = "Play";
+  //playBtn.textContent = "Play";
 };
 playBtn.addEventListener("click", () => {
   if (ytId === "") return;
-  if (playBtn.className === "play") {
+  if (playBtn.classList.contains("play")) {
     playLogic();
     player.playVideo();
   } else {
@@ -162,13 +172,13 @@ playBtn.addEventListener("click", () => {
     player.pauseVideo();
   }
 });
-stopBtn.addEventListener("click", () => {
-  player.stopVideo();
-  pauseLogic();
-  currentTime.innerText = "00:00";
-  totalTime.innerText = "00:00";
-  durationRange.value = 0;
-});
+// stopBtn.addEventListener("click", () => {
+//   player.stopVideo();
+//   pauseLogic();
+//   currentTime.innerText = "00:00";
+//   totalTime.innerText = "00:00";
+//   durationRange.value = 0;
+// });
 durationRange.addEventListener("change", (event) => {
   const {
     target: { value },

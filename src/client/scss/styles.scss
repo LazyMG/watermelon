@@ -1,5 +1,327 @@
 @import "./variables";
 
+// 플레이리스트 이미지 60px
+// 다시듣기 이미지 192px
+// 추천음악 이미지 60px
+// 플레이어 이미지 40px
+
+$color1: #518242;
+$color2: #d9e7cb;
+$color3: #41682c;
+$color4: #ffffff;
+$color5: #c1f0a4;
+$color6: #072100;
+
+$color7: #f8faf0;
+$color8: #edefe5;
+$color9: #d9dbd1;
+$color10: #d9e7cb;
+$color11: #b8f397;
 body {
-  background-color: $red;
+  height: 100vh;
+  width: 100vw;
+  background-color: #edefe5;
+  position: relative;
+}
+#player {
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 5.5fr;
+}
+.sidebar {
+  background-color: #d9dbd1;
+  display: grid;
+  grid-template-rows: 1fr 2.5fr;
+  .sidebar__header {
+    padding: 30px 30px;
+    .sidebar__title {
+      font-weight: 600;
+      font-size: 25px;
+    }
+    .sidebar__menus {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 30px 0;
+      font-size: 20px;
+      .sidebar__menu {
+        padding: 10px 15px;
+        border-radius: 15px;
+        color: grey;
+        cursor: pointer;
+        &.selected {
+          background-color: #d9e7cb;
+          color: black;
+          font-weight: 600;
+          // background-color: rgba($color: #9ede8d, $alpha: 0.2);
+        }
+        &:hover:not(.selected) {
+          //background-color: rgba($color: #9ede8d, $alpha: 0.7);
+          background-color: #c2dabb;
+        }
+      }
+    }
+  }
+  .sidebar__playlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .sidebar__playlist-border {
+      width: 70%;
+      height: 1px;
+      background-color: rgb(163, 163, 163);
+    }
+    .sidebar__playlist {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      padding: 0 20px;
+      box-sizing: border-box;
+      .sidebar__playlist-item {
+        margin-top: 20px;
+        padding: 10px;
+        display: flex;
+        border-radius: 15px;
+        gap: 15px;
+        background-color: #d9e7cb;
+        cursor: pointer;
+        .sidebar__playlist-img {
+          width: 60px;
+          aspect-ratio: 1 / 1;
+          background-image: url("https://i.namu.wiki/i/NhAdJ3KUK6OqbqwXHuem8FV-hM6wiFdjmBvR2JATahmom8GJE-Sp2yUbn4G3rdgIzbNIAuPuYi6XAerLBnq5aeXfRKz9ZfWIDJtGKZlwq7y-kLEThQi36abyduZL5aa4ef1rBtm7ARlag_oMNv8W1A.webp");
+          background-size: cover;
+          border-radius: 5px;
+        }
+        .sidebar__playlist-info {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          .sidebar__playlist-title {
+            font-size: 20px;
+            font-weight: bold;
+          }
+          .sidebar__playlist-singer {
+            font-size: 15px;
+          }
+        }
+        .sidebar__playlist-remove {
+          align-self: center;
+          cursor: pointer;
+          &:hover {
+            background-color: grey;
+          }
+        }
+      }
+    }
+  }
+}
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  .main__container {
+    width: 90%;
+    height: 100%;
+    .main__container__header {
+      padding: 20px;
+      input.search {
+        width: 35%;
+        padding: 10px 15px;
+        font-size: 15px;
+        border-radius: 10px;
+      }
+    }
+    .main__container__contents {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 70px;
+      .main__container__recent {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .main__container__recent__header {
+          .main__container__recent__header__title {
+            font-weight: bold;
+            font-size: 35px;
+            padding-left: 5px;
+          }
+        }
+        .main__container__recent__music-container {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 5px;
+          .main__container__recent__music {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            .main__container__recent__music__img {
+              width: 192px;
+              aspect-ratio: 1 / 1;
+              border-radius: 5px;
+            }
+            .main__container__recent__music__info {
+              display: flex;
+              flex-direction: column;
+              gap: 2px;
+              .main__container__recent__music__title {
+                font-weight: bold;
+                font-size: 18px;
+              }
+              .main__container__recent__music__singer {
+                font-size: 16px;
+              }
+            }
+          }
+        }
+      }
+      .main__container__recommend {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        .main__container__recommend__header {
+          .main__container__recommend__header__title {
+            font-weight: bold;
+            font-size: 35px;
+            padding-left: 5px;
+          }
+        }
+        .main__container__recommend__music-container {
+          display: grid;
+          grid-template-rows: repeat(3, 1fr); /* 3개의 행 */
+          grid-template-columns: repeat(4, 1fr); /* 4개의 열 */
+          gap: 15px;
+          .main__container__recommend__music {
+            display: flex;
+            gap: 10px;
+            padding: 5px;
+            cursor: pointer;
+            .main__container__recommend__music__img {
+              width: 60px;
+              aspect-ratio: 1 / 1;
+              border-radius: 5px;
+            }
+            .main__container__recommend__music__info {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              .main__container__recommend__music__title {
+                font-size: 18px;
+              }
+              .main__container__recommend__music__singer {
+                font-size: 15px;
+                color: rgba(0, 0, 0, 0.7);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.player {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 70px;
+  background-color: #b8f397;
+  .player__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    .player__control {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 30px;
+      gap: 15px;
+      .play__control__controller {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        .player__control__play {
+          font-size: 20px;
+        }
+      }
+      .player__control__time {
+        font-size: 14px;
+      }
+    }
+    .player__music {
+      width: 400px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      .player__music__img {
+        width: 50px;
+        aspect-ratio: 1 / 1;
+        background-image: url("https://i.namu.wiki/i/NhAdJ3KUK6OqbqwXHuem8FV-hM6wiFdjmBvR2JATahmom8GJE-Sp2yUbn4G3rdgIzbNIAuPuYi6XAerLBnq5aeXfRKz9ZfWIDJtGKZlwq7y-kLEThQi36abyduZL5aa4ef1rBtm7ARlag_oMNv8W1A.webp");
+        background-size: cover;
+        border-radius: 5px;
+      }
+      .player__music__info {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        .player__music__title {
+          font-weight: bold;
+        }
+        .player__music__singer {
+        }
+      }
+    }
+    .player__function {
+      height: 100%;
+      padding-right: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+}
+
+.player__range {
+  position: absolute;
+  bottom: 64px;
+  width: 100%;
+  input {
+    overflow: hidden;
+    height: 4px;
+    -webkit-appearance: none;
+    margin: 5px 0;
+    width: 100%;
+    background: transparent;
+
+    &::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 15px;
+      height: 4px;
+      background: #5e8f40;
+
+      cursor: pointer;
+      box-shadow: -100vw 0 0 100vw #768070;
+    }
+  }
+}
+
+.hide {
+  display: none;
 }
