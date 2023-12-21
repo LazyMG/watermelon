@@ -91,26 +91,29 @@ body {
         padding: 10px;
         display: flex;
         border-radius: 15px;
-        gap: 15px;
+
         background-color: #d9e7cb;
         cursor: pointer;
+        width: 200px;
+        justify-content: space-between;
         .sidebar__playlist-img {
-          width: 60px;
-          aspect-ratio: 1 / 1;
-          background-image: url("https://i.namu.wiki/i/NhAdJ3KUK6OqbqwXHuem8FV-hM6wiFdjmBvR2JATahmom8GJE-Sp2yUbn4G3rdgIzbNIAuPuYi6XAerLBnq5aeXfRKz9ZfWIDJtGKZlwq7y-kLEThQi36abyduZL5aa4ef1rBtm7ARlag_oMNv8W1A.webp");
-          background-size: cover;
+          width: 53px;
+          height: 53px;
           border-radius: 5px;
         }
         .sidebar__playlist-info {
           display: flex;
           flex-direction: column;
-          gap: 15px;
+          justify-content: space-around;
           .sidebar__playlist-title {
-            font-size: 20px;
+            font-size: 12px;
             font-weight: bold;
+            overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
+            white-space: nowrap; /* 줄 바꿈 금지 */
+            text-overflow: ellipsis;
           }
           .sidebar__playlist-singer {
-            font-size: 15px;
+            font-size: 10px;
           }
         }
         .sidebar__playlist-remove {
@@ -157,6 +160,7 @@ body {
           }
         }
         .main__container__recent__music-container {
+          width: 100%;
           display: grid;
           grid-template-columns: repeat(6, 1fr);
           gap: 5px;
@@ -165,6 +169,7 @@ body {
             flex-direction: column;
             gap: 5px;
             cursor: pointer;
+            max-width: 192px;
             .main__container__recent__music__img {
               width: 192px;
               aspect-ratio: 1 / 1;
@@ -177,6 +182,10 @@ body {
               .main__container__recent__music__title {
                 font-weight: bold;
                 font-size: 18px;
+                overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
+                white-space: nowrap; /* 줄 바꿈 금지 */
+                text-overflow: ellipsis;
+                padding: 2px 0;
               }
               .main__container__recent__music__singer {
                 font-size: 16px;
@@ -288,6 +297,26 @@ body {
       display: flex;
       align-items: center;
       gap: 10px;
+      .player__volume {
+        span {
+          font-size: 25px;
+
+          &:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
+      }
+      .player__add-list {
+        span {
+          font-size: 25px;
+
+          &:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }
@@ -323,5 +352,10 @@ body {
 }
 
 .hide {
-  display: none;
+  opacity: 0;
+}
+
+.show {
+  opacity: 1;
+  transition: opacity 0.5s ease;
 }

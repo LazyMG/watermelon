@@ -6,6 +6,8 @@ const musicComponent = document.querySelectorAll(".music");
 const musicComponentArray = [...musicComponent];
 
 const playBtn = document.querySelector(".player__control__play");
+const muteBtn = document.getElementById("muteBtn");
+const addBtn = document.getElementById("addBtn");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
@@ -20,6 +22,7 @@ const createPlayBarContent = (dataset) => {
   }
   const playerMusic = document.createElement("div");
   playerMusic.classList.add("player__music");
+  playerMusic.dataset.ytid = dataset.ytid;
 
   // 자식 요소들 생성
   const musicImg = document.createElement("img");
@@ -61,9 +64,105 @@ musicComponentArray.forEach((element) => {
       loading = true;
       updatePlayerWithNewId(newId);
       playBar.classList.remove("hide");
+      playBar.classList.add("show");
     }
   });
 });
+
+const handleMute = () => {
+  // if (player.isMuted() && volumeValue !== "0") {
+  //   player.unMute();
+  //   player.setVolume(volumeValue);
+  //   volumeRange.value = volumeValue;
+  //   muteBtn.classList.add("fa-volume-up");
+  //   muteBtn.classList.remove("fa-volume-mute");
+  //   isMute = false;
+  // } else {
+  //   volumeValue = volumeRange.value;
+  //   volumeRange.value = 0;
+  //   player.mute();
+  //   muteBtn.classList.remove("fa-volume-up");
+  //   muteBtn.classList.add("fa-volume-mute");
+  //   isMute = true;
+  // }
+  if (muteBtn.classList.contains("fa-volume-up")) {
+    muteBtn.classList.remove("fa-volume-up");
+    muteBtn.classList.add("fa-volume-mute");
+  } else {
+    muteBtn.classList.add("fa-volume-up");
+    muteBtn.classList.remove("fa-volume-mute");
+  }
+};
+muteBtn.addEventListener("click", handleMute);
+
+const handleAdd = () => {
+  //fetch
+  const playerMusic = document.querySelector(".player__music");
+  if (!playerMusic) return;
+  const addYtId = playerMusic.dataset.ytid;
+  const addCoverImg = playerMusic.querySelector("img").src;
+  const addTitle = playerMusic
+    .querySelector(".player__music__title")
+    .querySelector("span").innerText;
+  const addSinger = playerMusic
+    .querySelector(".player__music__singer")
+    .querySelector("span").innerText;
+  const data = {
+    addYtId,
+    addCoverImg,
+    addTitle,
+    addSinger,
+  };
+  createSidebarPlayListItem(data);
+};
+const handleDelete = (event) => {
+  //fetch
+  const deleteYtId = event.target.parentNode.dataset.ytid;
+  event.target.parentNode.remove();
+};
+const createSidebarPlayListItem = (data) => {
+  // .sidebar__playlist-item 요소 생성
+  const playlistItem = document.createElement("div");
+  playlistItem.classList.add("sidebar__playlist-item", "music");
+  playlistItem.id = "playlist-item";
+  playlistItem.dataset.ytid = data.addYtId;
+
+  // .sidebar__playlist-img 요소 생성 및 추가
+  const playlistImg = document.createElement("img");
+  playlistImg.classList.add("sidebar__playlist-img");
+  playlistImg.src = data.addCoverImg;
+  playlistItem.appendChild(playlistImg);
+
+  // .sidebar__playlist-info 요소 생성 및 추가
+  const playlistInfo = document.createElement("div");
+  playlistInfo.classList.add("sidebar__playlist-info");
+  playlistItem.appendChild(playlistInfo);
+
+  // .sidebar__playlist-title 요소 생성 및 추가
+  const playlistTitle = document.createElement("span");
+  playlistTitle.classList.add("sidebar__playlist-title");
+  playlistTitle.textContent = data.addTitle;
+  playlistInfo.appendChild(playlistTitle);
+
+  // .sidebar__playlist-singer 요소 생성 및 추가
+  const playlistSinger = document.createElement("span");
+  playlistSinger.classList.add("sidebar__playlist-singer");
+  playlistSinger.textContent = data.addSinger;
+  playlistInfo.appendChild(playlistSinger);
+
+  // .sidebar__playlist-remove 요소 생성 및 추가
+  const playlistRemove = document.createElement("div");
+  playlistRemove.classList.add("sidebar__playlist-remove", "fas", "fa-minus");
+  playlistRemove.id = "remove";
+  playlistItem.appendChild(playlistRemove);
+
+  playlistRemove.addEventListener("click", handleDelete);
+
+  // .sidebar__playlist에 생성한 요소 추가
+  const sidebarPlaylist = document.querySelector(".sidebar__playlist");
+  sidebarPlaylist.appendChild(playlistItem);
+};
+addBtn.addEventListener("click", handleAdd);
 
 const tag = document.createElement("script");
 
@@ -153,18 +252,16 @@ function stopVideo() {
   player.stopVideo();
 }
 const playLogic = () => {
-  playBtn.classList.remove("play");
-  playBtn.classList.add("pause");
-  //playBtn.textContent = "Pause";
+  playBtn.classList.remove("fa-play");
+  playBtn.classList.add("fa-pause");
 };
 const pauseLogic = () => {
-  playBtn.classList.remove("pause");
-  playBtn.classList.add("play");
-  //playBtn.textContent = "Play";
+  playBtn.classList.remove("fa-play");
+  playBtn.classList.add("fa-play");
 };
 playBtn.addEventListener("click", () => {
   if (ytId === "") return;
-  if (playBtn.classList.contains("play")) {
+  if (playBtn.classList.contains("fa-play")) {
     playLogic();
     player.playVideo();
   } else {

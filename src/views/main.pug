@@ -12,12 +12,16 @@ block content
       .player__control#player__control
         .play__control__controller
           .player__control__back B
-          .player__control__play.play P
+          .player__control__play.play.fas.fa-play
           .player__control__forward F
         .player__control__time
           span.player__control__time__current#currentTime 00:00
           span  / 
           span.player__control__time__total#totalTime 00:00
       .player__function
-        .player__volume V 
-        .player__add-list +
+        .player__volume
+          //- input(type="range" step="1" min="0" max="100" value="50")#volume 
+          //- hover하면 나타나게
+          span#muteBtn.mute.fas.fa-volume-up
+        .player__add-list
+          span#addBtn.fas.fa-plus
