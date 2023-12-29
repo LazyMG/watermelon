@@ -1,0 +1,14 @@
+.profile-main
+  //- if loggedIn
+  //-   h1=user.username 
+  //-   h2=user.email
+  //- else 
+  //-   h1 You should login
+  .profile-container
+    if loggedIn 
+      .profile-loggedIn
+        span 프로필 수정
+    else 
+      .profile-unLoggedIn
+        span You should log in! 
+        span 여기에 버튼

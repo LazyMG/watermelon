@@ -78,6 +78,7 @@ export const postLogin = async (req, res) => {
 };
 
 export const getGoogleLogin = (req, res) => {
+  console.log("enter");
   return res.render("googleLogin");
 };
 
@@ -128,14 +129,14 @@ export const postGoogleLogin = async (req, res) => {
   return res.redirect("/");
 };
 
-export const profile = async (req, res) => {
-  const { id } = req.params;
-  if (id.endsWith("google")) {
-    return res.render("profile", { pageTitle: "Profile" });
-  }
-  const user = await User.findById(id);
-  return res.render("profile", { pageTitle: "Profile" });
-};
+// export const profile = async (req, res) => {
+//   const { id } = req.params;
+//   if (id.endsWith("google")) {
+//     return res.render("profile", { currentPage: "Profile" });
+//   }
+//   const user = await User.findById(id);
+//   return res.render("profile", { pageTitle: "Profile" });
+// };
 
 export const logout = (req, res) => {
   req.session.destroy();

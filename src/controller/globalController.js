@@ -25,5 +25,18 @@ export const main = async (req, res) => {
   return res.render("main", {
     recentMusics,
     allMusics,
+    googleId: process.env.GOOGLE_CLIENT_ID,
+    googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
+    currentPage: "Home",
   });
+};
+
+export const profile = async (req, res) => {
+  return res.render("profile", { currentPage: "Profile" });
+  // const { id } = req.params;
+  // if (id.endsWith("google")) {
+  //   return res.render("profile", { currentPage: "Profile" });
+  // }
+  // const user = await User.findById(id);
+  // return res.render("profile", { pageTitle: "Profile" });
 };

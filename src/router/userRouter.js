@@ -4,4 +4,4 @@ import { protectMiddleware } from "../middlewares";
 
 export const userRouter = express.Router();
 
-userRouter.get("/:id", protectMiddleware, profile);
+//userRouter.get("/:id", protectMiddleware, profile);

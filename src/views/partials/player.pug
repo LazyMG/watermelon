@@ -1,0 +1,20 @@
+.player.hide#play-bar
+    .player__range
+      input(type="range", value="0")#duration
+    .player__container#player__container
+      .player__control#player__control
+        .play__control__controller
+          .player__control__back.fas.fa-backward-step
+          .player__control__play.play.fas.fa-play
+          .player__control__forward.fas.fa-forward-step
+        .player__control__time
+          span.player__control__time__current#currentTime 00:00
+          span  / 
+          span.player__control__time__total#totalTime 00:00
+      .player__function
+        .player__volume
+          //- input(type="range" step="1" min="0" max="100" value="50")#volume 
+          //- hover하면 나타나게
+          span#muteBtn.mute.fas.fa-volume-up
+        .player__add-list
+          span#addBtn.fas.fa-plus

@@ -28,4 +28,6 @@
 
 #### -> wetube comment 섹션 참고하자
 
-#### class="fas fa-play" / class="fas fa-volume-up" / "fas fa-volume-mute" / "fas fa-pause"
+#### 볼륨 조절
+
+#### profile

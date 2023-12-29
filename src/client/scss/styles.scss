@@ -22,6 +22,10 @@ body {
   width: 100vw;
   background-color: #edefe5;
   position: relative;
+  a {
+    text-decoration: none;
+    color: black;
+  }
 }
 #player {
   position: absolute;
@@ -86,41 +90,48 @@ body {
       width: 100%;
       padding: 0 20px;
       box-sizing: border-box;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       .sidebar__playlist-item {
         margin-top: 20px;
         padding: 10px;
         display: flex;
         border-radius: 15px;
-
         background-color: #d9e7cb;
         cursor: pointer;
         width: 200px;
-        justify-content: space-between;
+        // justify-content: space-between;
         .sidebar__playlist-img {
           width: 53px;
           height: 53px;
           border-radius: 5px;
         }
-        .sidebar__playlist-info {
+        .sidebar__playlist-item-container {
           display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          .sidebar__playlist-title {
-            font-size: 12px;
-            font-weight: bold;
-            overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
-            white-space: nowrap; /* 줄 바꿈 금지 */
-            text-overflow: ellipsis;
+          justify-content: space-between;
+          padding-left: 10px;
+          width: 100%;
+          .sidebar__playlist-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            .sidebar__playlist-title {
+              font-size: 12px;
+              font-weight: bold;
+            }
+            .sidebar__playlist-singer {
+              font-size: 10px;
+            }
           }
-          .sidebar__playlist-singer {
-            font-size: 10px;
-          }
-        }
-        .sidebar__playlist-remove {
-          align-self: center;
-          cursor: pointer;
-          &:hover {
-            background-color: grey;
+          .sidebar__playlist-remove {
+            align-self: center;
+            cursor: pointer;
+            &:hover {
+              background-color: grey;
+            }
           }
         }
       }
@@ -136,11 +147,29 @@ body {
     height: 100%;
     .main__container__header {
       padding: 20px;
-      input.search {
-        width: 35%;
-        padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .main__container__search {
+        width: 100%;
+        input.search {
+          width: 35%;
+          padding: 10px 15px;
+          font-size: 15px;
+          border-radius: 10px;
+        }
+      }
+      .main__container__login {
+        background-color: #d9dbd1;
+        padding: 20px 15px;
+        width: 150px;
         font-size: 15px;
-        border-radius: 10px;
+        font-weight: 600;
+        border-radius: 15px;
+        text-align: center;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
     .main__container__contents {
@@ -245,22 +274,26 @@ body {
   height: 70px;
   background-color: #b8f397;
   .player__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
     height: 100%;
+    position: relative;
     .player__control {
+      position: absolute;
       height: 100%;
       display: flex;
       align-items: center;
       padding-left: 30px;
       gap: 15px;
+      left: 0;
       .play__control__controller {
         display: flex;
         gap: 30px;
         align-items: center;
         .player__control__play {
-          font-size: 20px;
+          font-size: 25px;
+          width: 20px;
         }
       }
       .player__control__time {
@@ -273,6 +306,8 @@ body {
       display: flex;
       align-items: center;
       gap: 10px;
+      position: absolute;
+      left: 45%;
       .player__music__img {
         width: 50px;
         aspect-ratio: 1 / 1;
@@ -297,6 +332,8 @@ body {
       display: flex;
       align-items: center;
       gap: 10px;
+      position: absolute;
+      right: 0;
       .player__volume {
         span {
           font-size: 25px;
@@ -359,3 +396,26 @@ body {
   opacity: 1;
   transition: opacity 0.5s ease;
 }
+
+.profile-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  .profile-container {
+    background-color: black;
+    width: 400px;
+    height: 700px;
+    border-radius: 15px;
+  }
+}
+
+// 수정 필요 - 플레이리스트 music은 제외
+// .music {
+//   border-radius: 5px;
+//   padding: 10px;
+//   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+//   background-color: #edede6;
+//   // background-color: #edefe5;
+// }

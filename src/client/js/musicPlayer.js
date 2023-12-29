@@ -12,6 +12,8 @@ const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
 
+const loginDiv = document.querySelector(".main__container__login");
+
 let isMute = false;
 let loading = false;
 let ytId = "";
@@ -118,7 +120,7 @@ const handleAdd = () => {
 const handleDelete = (event) => {
   //fetch
   const deleteYtId = event.target.parentNode.dataset.ytid;
-  event.target.parentNode.remove();
+  event.target.parentNode.parentNode.remove();
 };
 const createSidebarPlayListItem = (data) => {
   // .sidebar__playlist-item 요소 생성
@@ -133,10 +135,13 @@ const createSidebarPlayListItem = (data) => {
   playlistImg.src = data.addCoverImg;
   playlistItem.appendChild(playlistImg);
 
+  const playlistItemContainer = document.createElement("div");
+  playlistItemContainer.classList.add("sidebar__playlist-item-container");
+
   // .sidebar__playlist-info 요소 생성 및 추가
   const playlistInfo = document.createElement("div");
   playlistInfo.classList.add("sidebar__playlist-info");
-  playlistItem.appendChild(playlistInfo);
+  playlistItemContainer.appendChild(playlistInfo);
 
   // .sidebar__playlist-title 요소 생성 및 추가
   const playlistTitle = document.createElement("span");
@@ -154,7 +159,9 @@ const createSidebarPlayListItem = (data) => {
   const playlistRemove = document.createElement("div");
   playlistRemove.classList.add("sidebar__playlist-remove", "fas", "fa-minus");
   playlistRemove.id = "remove";
-  playlistItem.appendChild(playlistRemove);
+  playlistItemContainer.appendChild(playlistRemove);
+
+  playlistItem.appendChild(playlistItemContainer);
 
   playlistRemove.addEventListener("click", handleDelete);
 
