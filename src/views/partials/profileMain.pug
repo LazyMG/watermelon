@@ -7,8 +7,12 @@
   .profile-container
     if loggedIn 
       .profile-loggedIn
-        span 프로필 수정
+        .profile-loggedIn__title
+          span Hello! #{user.username}
+        .profile-loggedIn__edit
     else 
       .profile-unLoggedIn
-        span You should log in! 
-        span 여기에 버튼
+        .profile-unLoggedIn__title
+          span Please Login
+        .profile-unLoggedIn__button 
+          a(href=`https://accounts.google.com/o/oauth2/auth?client_id=${googleId}&redirect_uri=${googleRedirectionUrl}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`) Google Login

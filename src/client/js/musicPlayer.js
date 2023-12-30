@@ -116,6 +116,7 @@ const handleAdd = () => {
     addSinger,
   };
   createSidebarPlayListItem(data);
+  //1. ytid를 보냄 2. 서버에서 ytid를 검색해서 음악을 찾음 3. 찾은 음악을 리스트에 추가
 };
 const handleDelete = (event) => {
   //fetch

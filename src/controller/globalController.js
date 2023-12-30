@@ -21,7 +21,7 @@ function splitArrayIntoChunks(arr, chunkSize) {
 export const main = async (req, res) => {
   const allMusics = await Music.find({});
   const recentMusics = allMusics.sort(() => 0.5 - Math.random()).slice(0, 6);
-
+  //playlistMusic 검색해서 가져오기
   return res.render("main", {
     recentMusics,
     allMusics,
@@ -32,7 +32,11 @@ export const main = async (req, res) => {
 };
 
 export const profile = async (req, res) => {
-  return res.render("profile", { currentPage: "Profile" });
+  return res.render("profile", {
+    googleId: process.env.GOOGLE_CLIENT_ID,
+    googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
+    currentPage: "Profile",
+  });
   // const { id } = req.params;
   // if (id.endsWith("google")) {
   //   return res.render("profile", { currentPage: "Profile" });

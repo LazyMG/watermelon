@@ -28,6 +28,6 @@
 
 #### -> wetube comment 섹션 참고하자
 
-#### 볼륨 조절
+#### 볼륨 조절, player hover
 
 #### profile
