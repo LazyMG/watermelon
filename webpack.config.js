@@ -2,7 +2,11 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: "./src/client/js/main.js",
+  entry: {
+    main: "./src/client/js/main.js",
+    googleLogin: "./src/client/js/googleLogin.js",
+    musicPlayer: "./src/client/js/musicPlayer.js",
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",

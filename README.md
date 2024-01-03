@@ -28,6 +28,8 @@
 
 #### -> wetube comment 섹션 참고하자
 
+#### -> 로그인 안하면 플레이리스트 불가?
+
 #### 볼륨 조절, player hover
 
 #### profile

@@ -98,7 +98,6 @@ const handleMute = () => {
 muteBtn.addEventListener("click", handleMute);
 
 const handleAdd = () => {
-  //fetch
   const playerMusic = document.querySelector(".player__music");
   if (!playerMusic) return;
   const addYtId = playerMusic.dataset.ytid;
@@ -117,11 +116,25 @@ const handleAdd = () => {
   };
   createSidebarPlayListItem(data);
   //1. ytid를 보냄 2. 서버에서 ytid를 검색해서 음악을 찾음 3. 찾은 음악을 리스트에 추가
+  fetch("/api/addList", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ addYtId }),
+  });
 };
 const handleDelete = (event) => {
-  //fetch
-  const deleteYtId = event.target.parentNode.dataset.ytid;
+  event.stopPropagation();
+  const deleteYtId = event.target.parentNode.parentNode.dataset.ytid;
   event.target.parentNode.parentNode.remove();
+  fetch("/api/removeList", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ deleteYtId }),
+  });
 };
 const createSidebarPlayListItem = (data) => {
   // .sidebar__playlist-item 요소 생성
@@ -171,6 +184,13 @@ const createSidebarPlayListItem = (data) => {
   sidebarPlaylist.appendChild(playlistItem);
 };
 addBtn.addEventListener("click", handleAdd);
+const deleteBtnComponent = document.querySelectorAll("#remove");
+if (deleteBtnComponent) {
+  const deleteBtnComponentArray = [...deleteBtnComponent];
+  deleteBtnComponentArray.forEach((element) => {
+    element.addEventListener("click", handleDelete);
+  });
+}
 
 const tag = document.createElement("script");
 

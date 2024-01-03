@@ -1,5 +1,12 @@
 import express from "express";
-import { home, main, play, profile } from "../controller/globalController";
+import {
+  addList,
+  home,
+  main,
+  play,
+  profile,
+  removeList,
+} from "../controller/globalController";
 import {
   getGoogleLogin,
   getJoin,
@@ -40,5 +47,7 @@ globalRouter.route("/login-google").get(getGoogleLogin).post(postGoogleLogin);
 globalRouter.get("/logout", protectMiddleware, logout);
 globalRouter.get("/main", main);
 globalRouter.get("/profile", profile);
+globalRouter.post("/api/addList", addList);
+globalRouter.post("/api/removeList", removeList);
 
 export default globalRouter;

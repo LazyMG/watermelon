@@ -16,6 +16,16 @@
   .sidebar__playlist-container
     .sidebar__playlist-border 
     .sidebar__playlist
+      if playListMusics
+        each music in playListMusics
+          .sidebar__playlist-item.music(data-ytId=music.ytId data-coverimg=music.coverImg data-title=music.title data-singer=music.singer)#playlist-item
+            img(src=music.coverImg).sidebar__playlist-img
+            .sidebar__playlist-item-container
+              .sidebar__playlist-info
+                span.sidebar__playlist-title=music.title
+                span.sidebar__playlist-singer=music.singer
+              .sidebar__playlist-remove.fas.fa-minus#remove
+
       //- .sidebar__playlist-item.music#playlist-item
       //-   .sidebar__playlist-img
       //-   .sidebar__playlist-info

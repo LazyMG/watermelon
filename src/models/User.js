@@ -9,15 +9,8 @@ const userSchema = new mongoose.Schema({
   admin: { type: Boolean, required: true },
   playList: [
     {
-      title: { type: String, require: true },
-      titleEng: { type: String, default: "" },
-      singer: { type: String, require: true },
-      singerEng: { type: String, default: "" },
-      albumTitle: { type: String, require: true },
-      albumTitleEng: { type: String, default: "" },
-      createdAt: { type: Date, default: Date.now },
-      coverImg: String,
-      ytId: { type: String, default: "" },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Music",
     },
   ],
 });
