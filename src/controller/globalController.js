@@ -1,9 +1,9 @@
 import Music from "../models/Music";
 import User from "../models/User";
 
-export const home = async (req, res) => {
+export const setting = async (req, res) => {
   const musics = await Music.find({});
-  return res.render("home", { pageTitle: "Home", musics });
+  return res.render("setting", { pageTitle: "Setting", musics });
 };
 
 export const play = async (req, res) => {
@@ -11,15 +11,7 @@ export const play = async (req, res) => {
   return res.render("play", { pageTitle: "Play", musics });
 };
 
-function splitArrayIntoChunks(arr, chunkSize) {
-  const resultArray = [];
-  for (let i = 0; i < arr.length; i += chunkSize) {
-    resultArray.push(arr.slice(i, i + chunkSize));
-  }
-  return resultArray;
-}
-
-export const main = async (req, res) => {
+export const home = async (req, res) => {
   const allMusics = await Music.find({});
   const recentMusics = allMusics.sort(() => 0.5 - Math.random()).slice(0, 6);
   //playlistMusic 검색해서 가져오기
@@ -54,27 +46,25 @@ export const profile = async (req, res) => {
 };
 
 export const addList = async (req, res) => {
+  if (!req.session.user) return res.end();
   const { _id: id } = req.session.user;
   if (!id) return res.end();
   const ytId = req.body.addYtId;
   const addMusic = await Music.findOne({ ytId });
-  const user = await User.findByIdAndUpdate(id, {
+  await User.findByIdAndUpdate(id, {
     $push: { playList: addMusic },
   });
-  //console.log(user);
   return res.end();
 };
 
 export const removeList = async (req, res) => {
-  console.log("delete");
+  if (!req.session.user) return res.end();
   const { _id: id } = req.session.user;
   if (!id) return res.end();
   const ytId = req.body.deleteYtId;
   const removeMusic = await Music.findOne({ ytId });
-  console.log(removeMusic._id);
-  const user = await User.findByIdAndUpdate(id, {
+  await User.findByIdAndUpdate(id, {
     $pull: { playList: removeMusic._id },
   });
-  //console.log(user);
   return res.end();
 };

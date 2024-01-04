@@ -6,8 +6,9 @@ include ../mixins/recommend__music
     .main__container__header
       .main__container__search
         input(placeholder="노래,앨범,아티스트 검색").search
-      .main__container__login
-        a(href=`https://accounts.google.com/o/oauth2/auth?client_id=${googleId}&redirect_uri=${googleRedirectionUrl}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`) Google Login
+      if !loggedIn 
+        .main__container__login
+          a(href=`https://accounts.google.com/o/oauth2/auth?client_id=${googleId}&redirect_uri=${googleRedirectionUrl}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`) Google Login
     .main__container__contents 
       .main__container__recent
         .main__container__recent__header 

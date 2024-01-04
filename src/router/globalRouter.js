@@ -2,10 +2,10 @@ import express from "express";
 import {
   addList,
   home,
-  main,
   play,
   profile,
   removeList,
+  setting,
 } from "../controller/globalController";
 import {
   getGoogleLogin,
@@ -28,6 +28,7 @@ export const globalRouter = express.Router();
 globalRouter.get("/", home);
 globalRouter.get("/search", search);
 globalRouter.get("/play", play);
+globalRouter.get("/setting", setting);
 globalRouter
   .route("/upload")
   .all(adminOnlyMiddleware)
@@ -45,7 +46,6 @@ globalRouter
   .post(postLogin);
 globalRouter.route("/login-google").get(getGoogleLogin).post(postGoogleLogin);
 globalRouter.get("/logout", protectMiddleware, logout);
-globalRouter.get("/main", main);
 globalRouter.get("/profile", profile);
 globalRouter.post("/api/addList", addList);
 globalRouter.post("/api/removeList", removeList);

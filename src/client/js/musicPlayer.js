@@ -11,12 +11,17 @@ const addBtn = document.getElementById("addBtn");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
+const volumeRange = document.getElementById("volume");
 
 const loginDiv = document.querySelector(".main__container__login");
 
 let isMute = false;
 let loading = false;
 let ytId = "";
+let volumeValue = volumeRange.value;
+let isPlay = false;
+let isEnd = false;
+let localPlayListArr = [];
 
 const createPlayBarContent = (dataset) => {
   if (document.querySelector(".player__music")) {
@@ -65,29 +70,49 @@ musicComponentArray.forEach((element) => {
       playLogic();
       loading = true;
       updatePlayerWithNewId(newId);
-      playBar.classList.remove("hide");
-      playBar.classList.add("show");
     }
   });
 });
 
 const handleMute = () => {
-  // if (player.isMuted() && volumeValue !== "0") {
-  //   player.unMute();
-  //   player.setVolume(volumeValue);
-  //   volumeRange.value = volumeValue;
-  //   muteBtn.classList.add("fa-volume-up");
-  //   muteBtn.classList.remove("fa-volume-mute");
-  //   isMute = false;
-  // } else {
-  //   volumeValue = volumeRange.value;
-  //   volumeRange.value = 0;
-  //   player.mute();
+  if (player.isMuted() && volumeValue !== "0") {
+    player.unMute();
+    player.setVolume(volumeValue);
+    volumeRange.value = volumeValue;
+    muteBtn.classList.add("fa-volume-up");
+    muteBtn.classList.remove("fa-volume-mute");
+    isMute = false;
+  } else {
+    volumeValue = volumeRange.value;
+    volumeRange.value = 0;
+    player.mute();
+    muteBtn.classList.remove("fa-volume-up");
+    muteBtn.classList.add("fa-volume-mute");
+    isMute = true;
+  }
+  // if (muteBtn.classList.contains("fa-volume-up")) {
   //   muteBtn.classList.remove("fa-volume-up");
   //   muteBtn.classList.add("fa-volume-mute");
-  //   isMute = true;
+  // } else {
+  //   muteBtn.classList.add("fa-volume-up");
+  //   muteBtn.classList.remove("fa-volume-mute");
   // }
-  if (muteBtn.classList.contains("fa-volume-up")) {
+};
+muteBtn.addEventListener("click", handleMute);
+const handleVolumeVisivle = () => {
+  volumeRange.classList.remove("hide");
+  volumeRange.classList.add("show");
+};
+muteBtn.addEventListener("mouseenter", handleVolumeVisivle);
+const handleVolumeInvisible = () => {
+  volumeRange.classList.remove("show");
+  volumeRange.classList.add("hide");
+};
+playBar.addEventListener("mouseleave", handleVolumeInvisible);
+const handleVolume = (event) => {
+  volumeValue = event.target.value;
+  player.setVolume(volumeValue);
+  if (event.target.value === "0") {
     muteBtn.classList.remove("fa-volume-up");
     muteBtn.classList.add("fa-volume-mute");
   } else {
@@ -95,8 +120,7 @@ const handleMute = () => {
     muteBtn.classList.remove("fa-volume-mute");
   }
 };
-muteBtn.addEventListener("click", handleMute);
-
+volumeRange.addEventListener("input", handleVolume);
 const handleAdd = () => {
   const playerMusic = document.querySelector(".player__music");
   if (!playerMusic) return;
@@ -114,6 +138,9 @@ const handleAdd = () => {
     addTitle,
     addSinger,
   };
+  if (localPlayListArr.includes(addYtId)) return;
+  if (localPlayListArr.length >= 20) return;
+  localPlayListArr.push(addYtId);
   createSidebarPlayListItem(data);
   //1. ytid를 보냄 2. 서버에서 ytid를 검색해서 음악을 찾음 3. 찾은 음악을 리스트에 추가
   fetch("/api/addList", {
@@ -128,6 +155,7 @@ const handleDelete = (event) => {
   event.stopPropagation();
   const deleteYtId = event.target.parentNode.parentNode.dataset.ytid;
   event.target.parentNode.parentNode.remove();
+  localPlayListArr.pop(deleteYtId);
   fetch("/api/removeList", {
     method: "POST",
     headers: {
@@ -199,6 +227,7 @@ const firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 let player;
+let playerReady = false;
 function onYouTubeIframeAPIReady() {
   player = new YT.Player("player", {
     height: "0",
@@ -209,6 +238,7 @@ function onYouTubeIframeAPIReady() {
       onStateChange: onPlayerStateChange,
     },
   });
+  playerReady = true;
 }
 
 function updateCurrentTime() {
@@ -216,16 +246,20 @@ function updateCurrentTime() {
     const currentTimeFormatted = new Date(player.getCurrentTime() * 1000)
       .toISOString()
       .substring(14, 19);
-    currentTime.innerText = currentTimeFormatted;
+    if (!isEnd) currentTime.innerText = currentTimeFormatted;
   }
   requestAnimationFrame(updateCurrentTime);
 }
 
 function updatePlayerWithNewId(newYtId) {
-  if (player) {
-    player.stopVideo();
-    player.destroy();
+  if (
+    typeof player.stopVideo !== "function" ||
+    typeof player.destroy !== "function"
+  ) {
+    return;
   }
+  player.stopVideo();
+  player.destroy();
 
   ytId = newYtId;
 
@@ -238,11 +272,16 @@ function updatePlayerWithNewId(newYtId) {
       onStateChange: onPlayerStateChange,
     },
   });
+
+  playBar.classList.remove("hide");
+  playBar.classList.add("show");
+  isPlay = true;
+  isEnd = false;
 }
 
 function onPlayerReady(event) {
   event.target.playVideo();
-  //event.target.setVolume(volumeValue);
+  event.target.setVolume(volumeValue);
   if (isMute) {
     event.target.mute();
   } else {
@@ -270,9 +309,17 @@ function onPlayerStateChange(event) {
       //console.log("Current Time:", Math.round(playerCurrentTime));
       durationRange.value = playerCurrentTime;
     }, 1000);
-    //event.target.setVolume(volumeValue);
+    event.target.setVolume(volumeValue);
   } else {
     clearInterval(intervalId);
+  }
+  if (event.data == YT.PlayerState.ENDED) {
+    console.log("finish!!");
+    currentTime.innerText = totalTime.innerText;
+    playBtn.classList.add("fa-play");
+    playBtn.classList.remove("fa-pause");
+    isPlay = false;
+    isEnd = true;
   }
 }
 
@@ -282,16 +329,22 @@ function stopVideo() {
 const playLogic = () => {
   playBtn.classList.remove("fa-play");
   playBtn.classList.add("fa-pause");
+  isPlay = true;
+  if (isEnd) {
+    updatePlayerWithNewId(ytId);
+    isEnd = false;
+  }
 };
 const pauseLogic = () => {
   playBtn.classList.remove("fa-play");
   playBtn.classList.add("fa-play");
+  isPlay = false;
 };
 playBtn.addEventListener("click", () => {
   if (ytId === "") return;
   if (playBtn.classList.contains("fa-play")) {
     playLogic();
-    player.playVideo();
+    if (player && typeof player.playVideo === "function") player.playVideo();
   } else {
     pauseLogic();
     player.pauseVideo();
@@ -320,5 +373,4 @@ durationRange.addEventListener("input", (event) => {
     target: { value },
   } = event;
   const formattedTime = new Date(value * 1000).toISOString().substring(14, 19);
-  console.log(formattedTime);
 });

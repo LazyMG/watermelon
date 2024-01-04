@@ -10,6 +10,8 @@
         .profile-loggedIn__title
           span Hello! #{user.username}
         .profile-loggedIn__edit
+        .profile-loggedIn-logout
+          a(href=`/logout`) Logout
     else 
       .profile-unLoggedIn
         .profile-unLoggedIn__title
