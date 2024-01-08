@@ -9,7 +9,7 @@ export const protectMiddleware = (req, res, next) => {
   if (req.session.loggedIn) {
     return next();
   } else {
-    return res.redirect("/login");
+    return res.redirect("/profile");
   }
 };
 
@@ -23,7 +23,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
 };
 
 export const adminOnlyMiddleware = (req, res, next) => {
-  if (!req.session.user.admin) {
+  if (!req.session.user || !req.session.user.admin) {
     return res.redirect("/");
   } else {
     return next();

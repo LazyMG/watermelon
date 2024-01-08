@@ -78,7 +78,6 @@ export const postLogin = async (req, res) => {
 };
 
 export const getGoogleLogin = (req, res) => {
-  console.log("enter");
   return res.render("googleLogin");
 };
 

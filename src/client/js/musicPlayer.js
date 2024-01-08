@@ -7,21 +7,27 @@ const musicComponentArray = [...musicComponent];
 
 const playBtn = document.querySelector(".player__control__play");
 const muteBtn = document.getElementById("muteBtn");
+const repeatBtn = document.getElementById("repeatBtn");
 const addBtn = document.getElementById("addBtn");
+const backwardBtn = document.getElementById("backwardBtn");
+const forwardBtn = document.getElementById("forwardBtn");
+
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
 const durationRange = document.getElementById("duration");
 const volumeRange = document.getElementById("volume");
 
-const loginDiv = document.querySelector(".main__container__login");
-
 let isMute = false;
 let loading = false;
 let ytId = "";
 let volumeValue = volumeRange.value;
-let isPlay = false;
 let isEnd = false;
-let localPlayListArr = [];
+let isRepeat = false;
+let musicNumber = -1;
+
+const initialPlayListItem = document.querySelectorAll("#playlist-item");
+let playListMusics = [...initialPlayListItem];
+console.log(playListMusics);
 
 const createPlayBarContent = (dataset) => {
   if (document.querySelector(".player__music")) {
@@ -66,10 +72,11 @@ musicComponentArray.forEach((element) => {
     durationRange.value = "0";
     if (!loading) {
       const newId = element.dataset.ytid;
+      ytId = newId;
       createPlayBarContent(element.dataset);
       playLogic();
       loading = true;
-      updatePlayerWithNewId(newId);
+      updatePlayerWithNewId(ytId);
     }
   });
 });
@@ -90,25 +97,21 @@ const handleMute = () => {
     muteBtn.classList.add("fa-volume-mute");
     isMute = true;
   }
-  // if (muteBtn.classList.contains("fa-volume-up")) {
-  //   muteBtn.classList.remove("fa-volume-up");
-  //   muteBtn.classList.add("fa-volume-mute");
-  // } else {
-  //   muteBtn.classList.add("fa-volume-up");
-  //   muteBtn.classList.remove("fa-volume-mute");
-  // }
 };
 muteBtn.addEventListener("click", handleMute);
+
 const handleVolumeVisivle = () => {
   volumeRange.classList.remove("hide");
   volumeRange.classList.add("show");
 };
 muteBtn.addEventListener("mouseenter", handleVolumeVisivle);
+
 const handleVolumeInvisible = () => {
   volumeRange.classList.remove("show");
   volumeRange.classList.add("hide");
 };
 playBar.addEventListener("mouseleave", handleVolumeInvisible);
+
 const handleVolume = (event) => {
   volumeValue = event.target.value;
   player.setVolume(volumeValue);
@@ -121,6 +124,7 @@ const handleVolume = (event) => {
   }
 };
 volumeRange.addEventListener("input", handleVolume);
+
 const handleAdd = () => {
   const playerMusic = document.querySelector(".player__music");
   if (!playerMusic) return;
@@ -138,11 +142,18 @@ const handleAdd = () => {
     addTitle,
     addSinger,
   };
-  if (localPlayListArr.includes(addYtId)) return;
-  if (localPlayListArr.length >= 20) return;
-  localPlayListArr.push(addYtId);
+  let validateFlag = false;
+  playListMusics.forEach((music) => {
+    if (music.dataset.ytid === addYtId) {
+      validateFlag = true;
+      return;
+    }
+  });
+  if (validateFlag) {
+    return;
+  }
   createSidebarPlayListItem(data);
-  //1. ytid를 보냄 2. 서버에서 ytid를 검색해서 음악을 찾음 3. 찾은 음악을 리스트에 추가
+
   fetch("/api/addList", {
     method: "POST",
     headers: {
@@ -154,8 +165,8 @@ const handleAdd = () => {
 const handleDelete = (event) => {
   event.stopPropagation();
   const deleteYtId = event.target.parentNode.parentNode.dataset.ytid;
+  playListMusics.pop(event.target.parentNode.parentNode);
   event.target.parentNode.parentNode.remove();
-  localPlayListArr.pop(deleteYtId);
   fetch("/api/removeList", {
     method: "POST",
     headers: {
@@ -204,14 +215,27 @@ const createSidebarPlayListItem = (data) => {
   playlistItemContainer.appendChild(playlistRemove);
 
   playlistItem.appendChild(playlistItemContainer);
+  playListMusics.push(playlistItem);
 
   playlistRemove.addEventListener("click", handleDelete);
+  playlistItem.addEventListener("click", () => {
+    durationRange.value = "0";
+    if (!loading) {
+      const newId = data.ytid;
+      ytId = newId;
+      createPlayBarContent(data);
+      playLogic();
+      loading = true;
+      updatePlayerWithNewId(ytId);
+    }
+  });
 
   // .sidebar__playlist에 생성한 요소 추가
   const sidebarPlaylist = document.querySelector(".sidebar__playlist");
   sidebarPlaylist.appendChild(playlistItem);
 };
 addBtn.addEventListener("click", handleAdd);
+
 const deleteBtnComponent = document.querySelectorAll("#remove");
 if (deleteBtnComponent) {
   const deleteBtnComponentArray = [...deleteBtnComponent];
@@ -275,7 +299,6 @@ function updatePlayerWithNewId(newYtId) {
 
   playBar.classList.remove("hide");
   playBar.classList.add("show");
-  isPlay = true;
   isEnd = false;
 }
 
@@ -305,21 +328,32 @@ function onPlayerStateChange(event) {
 
     intervalId = setInterval(() => {
       const playerCurrentTime = event.target.getCurrentTime();
-
-      //console.log("Current Time:", Math.round(playerCurrentTime));
-      durationRange.value = playerCurrentTime;
+      if (!loading) {
+        durationRange.value = playerCurrentTime;
+      }
+      //console.log("Interval", durationRange.value);
     }, 1000);
     event.target.setVolume(volumeValue);
   } else {
     clearInterval(intervalId);
   }
   if (event.data == YT.PlayerState.ENDED) {
-    console.log("finish!!");
+    durationRange.value = event.target.getDuration();
     currentTime.innerText = totalTime.innerText;
-    playBtn.classList.add("fa-play");
-    playBtn.classList.remove("fa-pause");
-    isPlay = false;
-    isEnd = true;
+    if (isRepeat) {
+      updatePlayerWithNewId(ytId);
+      return;
+    }
+    setMusicNumber();
+    //리스트의 곡이 아니거나 리스트의 마지막 곡일 때
+    if (musicNumber === -1 || playListMusics.length === musicNumber + 1) {
+      playBtn.classList.add("fa-play");
+      playBtn.classList.remove("fa-pause");
+      isEnd = true;
+      return;
+    }
+    //리스트의 다음곡 재생
+    handleForward();
   }
 }
 
@@ -329,7 +363,6 @@ function stopVideo() {
 const playLogic = () => {
   playBtn.classList.remove("fa-play");
   playBtn.classList.add("fa-pause");
-  isPlay = true;
   if (isEnd) {
     updatePlayerWithNewId(ytId);
     isEnd = false;
@@ -338,7 +371,6 @@ const playLogic = () => {
 const pauseLogic = () => {
   playBtn.classList.remove("fa-play");
   playBtn.classList.add("fa-play");
-  isPlay = false;
 };
 playBtn.addEventListener("click", () => {
   if (ytId === "") return;
@@ -350,27 +382,86 @@ playBtn.addEventListener("click", () => {
     player.pauseVideo();
   }
 });
-// stopBtn.addEventListener("click", () => {
-//   player.stopVideo();
-//   pauseLogic();
-//   currentTime.innerText = "00:00";
-//   totalTime.innerText = "00:00";
-//   durationRange.value = 0;
-// });
+
 durationRange.addEventListener("change", (event) => {
   const {
     target: { value },
   } = event;
   if (player.videoTitle) {
     player.seekTo(value, true);
+    isEnd = false;
+    if (playBtn.classList.contains("fa-play")) {
+      playLogic();
+    }
   } else {
     event.target.value = 0;
     return;
   }
 });
-durationRange.addEventListener("input", (event) => {
-  const {
-    target: { value },
-  } = event;
-  const formattedTime = new Date(value * 1000).toISOString().substring(14, 19);
-});
+
+const handleRepeat = (event) => {
+  if (!isRepeat) {
+    isRepeat = true;
+    event.target.style.opacity = "1";
+  } else {
+    isRepeat = false;
+    event.target.style.opacity = "0.3";
+  }
+};
+repeatBtn.addEventListener("click", handleRepeat);
+
+const setMusicNumber = () => {
+  playListMusics.forEach((music, index) => {
+    if (music.dataset.ytid === ytId) {
+      musicNumber = index;
+    }
+  });
+};
+
+const handleForward = () => {
+  //리스트에 노래가 없을 때
+  if (playListMusics.length === 0) {
+    return;
+  }
+  setMusicNumber();
+  //지금 재생곡이 리스트에 없어서 다음 곡 재생할 수 없을 때
+  if (musicNumber === -1) {
+    return;
+  }
+  if (playListMusics[musicNumber + 1]) {
+    //다음 곡이 존재할 때
+    console.log("next");
+    console.log(playListMusics[musicNumber + 1]);
+    const nextMusic = playListMusics[musicNumber + 1];
+    createPlayBarContent(nextMusic.dataset);
+    updatePlayerWithNewId(nextMusic.dataset.ytid);
+  } else {
+    //현재 곡이 마지막 곡일 때
+    console.log("last");
+  }
+};
+forwardBtn.addEventListener("click", handleForward);
+
+const handleBackward = () => {
+  if (playListMusics.length === 0) {
+    return;
+  }
+  setMusicNumber();
+
+  if (musicNumber === -1) {
+    return;
+  }
+
+  if (playListMusics[musicNumber - 1]) {
+    //이전 곡이 존재할 때
+    console.log("prev");
+    console.log(playListMusics[musicNumber - 1]);
+    const prevMusic = playListMusics[musicNumber - 1];
+    createPlayBarContent(prevMusic.dataset);
+    updatePlayerWithNewId(prevMusic.dataset.ytid);
+  } else {
+    //현재 곡이 첫곡일 때
+    console.log("first");
+  }
+};
+backwardBtn.addEventListener("click", handleBackward);

@@ -31,8 +31,8 @@ body {
 #player {
   position: absolute;
   top: 0;
-  width: 200px;
-  height: 200px;
+  width: 0;
+  height: 0;
 }
 
 .page {
@@ -307,6 +307,20 @@ body {
             cursor: pointer;
           }
         }
+        .player__control__back {
+          font-size: 20px;
+          &:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
+        .player__control__forward {
+          font-size: 20px;
+          &:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
       }
       .player__control__time {
         font-size: 14px;
@@ -343,7 +357,7 @@ body {
       padding-right: 30px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 15px;
       position: absolute;
       right: 0;
       .player__volume {
@@ -351,7 +365,7 @@ body {
           position: absolute;
           width: 100px;
           height: 15px;
-          right: 110px;
+          right: 140px;
           bottom: 25px;
         }
         span {
@@ -367,6 +381,17 @@ body {
         //     display: block;
         //   }
         // }
+      }
+      .player__repeat {
+        span {
+          font-size: 25px;
+          opacity: 0.3;
+
+          &:hover {
+            opacity: 0.7;
+            cursor: pointer;
+          }
+        }
       }
       .player__add-list {
         span {
@@ -407,7 +432,13 @@ body {
       background: #5e8f40;
 
       cursor: pointer;
-      box-shadow: -100vw 0 0 100vw #768070;
+      box-shadow: -100vw 0 0 100vw #abb4a6;
+    }
+    &:hover {
+      height: 8px;
+      &::-webkit-slider-thumb {
+        height: 8px;
+      }
     }
   }
 }

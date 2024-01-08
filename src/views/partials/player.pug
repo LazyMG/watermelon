@@ -4,9 +4,9 @@
     .player__container#player__container
       .player__control#player__control
         .play__control__controller
-          .player__control__back.fas.fa-backward-step
+          .player__control__back.fas.fa-backward-step#backwardBtn
           .player__control__play.play.fas.fa-play
-          .player__control__forward.fas.fa-forward-step
+          .player__control__forward.fas.fa-forward-step#forwardBtn
         .player__control__time
           span.player__control__time__current#currentTime 00:00
           span  / 
@@ -16,5 +16,7 @@
           input(type="range" step="1" min="0" max="100" value="50")#volume.hide 
           //- hover하면 나타나게
           span#muteBtn.mute.fas.fa-volume-up
+        .player__repeat 
+          span#repeatBtn.fas.fa-repeat
         .player__add-list
           span#addBtn.fas.fa-plus

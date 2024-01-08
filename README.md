@@ -16,8 +16,6 @@
 
 #### webpack, webpack-cli -> 프론트엔드 설정
 
-#### profile, logout
-
-#### 반복 재생있으면 좋겠다
+#### profile
 
 #### Uncaught TypeError: player.stopVideo is not a function 수정필요 musicPlayer 258 수정은 했는데 딜레이 처리를 어떻게 할 지 고민
