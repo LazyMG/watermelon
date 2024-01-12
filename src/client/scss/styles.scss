@@ -5,22 +5,18 @@
 // 추천음악 이미지 60px
 // 플레이어 이미지 40px
 
-$color1: #518242;
-$color2: #d9e7cb;
-$color3: #41682c;
-$color4: #ffffff;
-$color5: #c1f0a4;
-$color6: #072100;
+$bgColor: #edefe5;
+$sidebarColor: #d9dbd1;
+$sidebarMenu_playListItemColor: #d9e7cb;
+$sidebarMenuHoverColor: #c2dabb;
+$playerColor: #cbe5bc;
+$sliderThumbColor: #5e8f40;
+$sliderBgColor: #abb4a6;
 
-$color7: #f8faf0;
-$color8: #edefe5;
-$color9: #d9dbd1;
-$color10: #d9e7cb;
-$color11: #b8f397;
 body {
   height: 100vh;
   width: 100vw;
-  background-color: #edefe5;
+  background-color: $bgColor;
   position: relative;
   overflow: hidden;
   a {
@@ -39,106 +35,115 @@ body {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 5.5fr;
+  grid-template-columns: 1.2fr 5fr;
 }
 .sidebar {
-  background-color: #d9dbd1;
+  background-color: $bgColor;
   // display: grid;
   // grid-template-rows: 1fr 2.5fr;
-  .sidebar__header {
-    padding: 30px 30px;
-    .sidebar__title {
-      font-weight: 600;
-      font-size: 25px;
-    }
-    .sidebar__menus {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 30px 0;
-      font-size: 20px;
-      .sidebar__menu {
-        padding: 10px 15px;
-        border-radius: 15px;
-        color: grey;
-        cursor: pointer;
-        display: flex;
-        a {
-          width: 100%;
-        }
-        &.selected {
-          background-color: #d9e7cb;
-          color: black;
-          font-weight: 600;
-          // background-color: rgba($color: #9ede8d, $alpha: 0.2);
-        }
-        &:hover:not(.selected) {
-          //background-color: rgba($color: #9ede8d, $alpha: 0.7);
-          background-color: #c2dabb;
-        }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .sidebar__container {
+    background-color: $sidebarColor;
+    width: 92%;
+    height: 97%;
+    border-radius: 15px;
+    .sidebar__header {
+      padding: 30px 35px;
+      .sidebar__title {
+        font-weight: 600;
+        font-size: 25px;
       }
-    }
-  }
-  .sidebar__playlist-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    .sidebar__playlist-border {
-      width: 70%;
-      height: 1px;
-      background-color: rgb(163, 163, 163);
-    }
-    .sidebar__playlist {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      width: 100%;
-      height: 670px;
-      padding: 0 20px;
-      box-sizing: border-box;
-      overflow-y: scroll;
-      padding-bottom: 100px;
-      &::-webkit-scrollbar {
-        display: none;
-      }
-      .sidebar__playlist-item {
-        margin-top: 20px;
-        padding: 10px;
+      .sidebar__menus {
         display: flex;
-        border-radius: 15px;
-        background-color: #d9e7cb;
-        cursor: pointer;
-        width: 200px;
-        // justify-content: space-between;
-        .sidebar__playlist-img {
-          width: 53px;
-          height: 53px;
-          border-radius: 5px;
-        }
-        .sidebar__playlist-item-container {
+        flex-direction: column;
+        gap: 10px;
+        padding: 30px 0;
+        font-size: 20px;
+        .sidebar__menu {
+          padding: 10px 15px;
+          border-radius: 15px;
+          color: grey;
+          cursor: pointer;
           display: flex;
-          justify-content: space-between;
-          padding-left: 10px;
-          width: 100%;
-          .sidebar__playlist-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-
-            .sidebar__playlist-title {
-              font-size: 12px;
-              font-weight: bold;
-            }
-            .sidebar__playlist-singer {
-              font-size: 10px;
-            }
+          a {
+            width: 100%;
           }
-          .sidebar__playlist-remove {
-            align-self: center;
-            cursor: pointer;
-            &:hover {
-              background-color: grey;
+          &.selected {
+            background-color: $sidebarMenu_playListItemColor;
+            color: black;
+            font-weight: 600;
+            // background-color: rgba($color: #9ede8d, $alpha: 0.2);
+          }
+          &:hover:not(.selected) {
+            //background-color: rgba($color: #9ede8d, $alpha: 0.7);
+            background-color: $sidebarMenuHoverColor;
+          }
+        }
+      }
+    }
+    .sidebar__playlist-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      .sidebar__playlist-border {
+        width: 70%;
+        height: 1px;
+        background-color: rgb(163, 163, 163);
+      }
+      .sidebar__playlist {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+        height: 670px;
+        padding: 0 30px;
+        box-sizing: border-box;
+        overflow-y: scroll;
+        padding-bottom: 100px;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        .sidebar__playlist-item {
+          margin-top: 20px;
+          padding: 10px;
+          display: flex;
+          border-radius: 15px;
+          background-color: $sidebarMenu_playListItemColor;
+          cursor: pointer;
+          width: 220px;
+          // justify-content: space-between;
+          .sidebar__playlist-img {
+            width: 53px;
+            height: 53px;
+            border-radius: 5px;
+          }
+          .sidebar__playlist-item-container {
+            display: flex;
+            justify-content: space-between;
+            padding-left: 10px;
+            width: 100%;
+            .sidebar__playlist-info {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              width: 90%;
+              .sidebar__playlist-title {
+                font-size: 12px;
+                font-weight: bold;
+              }
+              .sidebar__playlist-singer {
+                font-size: 10px;
+              }
+            }
+            .sidebar__playlist-remove {
+              align-self: center;
+              cursor: pointer;
+              &:hover {
+                background-color: grey;
+              }
             }
           }
         }
@@ -153,16 +158,30 @@ body {
   .main__container {
     width: 90%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     .main__container__header {
       padding: 20px;
+      padding-left: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
       .main__container__search {
         width: 100%;
+        position: relative;
+        #searchBtn {
+          position: absolute;
+          top: 12px;
+          left: 15px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
         input.search {
           width: 35%;
           padding: 10px 15px;
+          padding-left: 45px;
           font-size: 15px;
           border-radius: 10px;
         }
@@ -280,7 +299,7 @@ body {
   bottom: 0;
   width: 100vw;
   height: 70px;
-  background-color: #b8f397;
+  background-color: $playerColor;
   .player__container {
     // display: flex;
     // justify-content: space-between;
@@ -429,10 +448,10 @@ body {
       -webkit-appearance: none;
       width: 15px;
       height: 4px;
-      background: #5e8f40;
+      background: $sliderThumbColor;
 
       cursor: pointer;
-      box-shadow: -100vw 0 0 100vw #abb4a6;
+      box-shadow: -100vw 0 0 100vw $sliderBgColor;
     }
     &:hover {
       height: 8px;

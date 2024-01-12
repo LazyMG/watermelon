@@ -18,4 +18,6 @@
 
 #### profile
 
+#### 모바일 width 430 / height 932
+
 #### Uncaught TypeError: player.stopVideo is not a function 수정필요 musicPlayer 258 수정은 했는데 딜레이 처리를 어떻게 할 지 고민

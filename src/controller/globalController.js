@@ -68,3 +68,11 @@ export const removeList = async (req, res) => {
   });
   return res.end();
 };
+
+export const getSearchMusic = async (req, res) => {
+  const { search } = req.query;
+  //search로 검색
+  return res.render("main", {
+    currentPage: "Search",
+  });
+};

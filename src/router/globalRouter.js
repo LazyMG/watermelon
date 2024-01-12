@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addList,
+  getSearchMusic,
   home,
   play,
   profile,
@@ -26,7 +27,7 @@ import {
 export const globalRouter = express.Router();
 
 globalRouter.get("/", home);
-globalRouter.get("/search", search);
+globalRouter.get("/search", getSearchMusic);
 globalRouter.get("/play", play);
 globalRouter.get("/setting", setting);
 globalRouter
