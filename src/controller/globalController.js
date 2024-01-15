@@ -14,7 +14,9 @@ export const play = async (req, res) => {
 export const home = async (req, res) => {
   const allMusics = await Music.find({});
   const recentMusics = allMusics.sort(() => 0.5 - Math.random()).slice(0, 6);
-  //playlistMusic 검색해서 가져오기
+  const recommendMusics = allMusics
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 12);
   let playListMusics = [];
   if (req.session.user) {
     const { _id: id } = req.session.user;
@@ -23,7 +25,7 @@ export const home = async (req, res) => {
   playListMusics = playListMusics.playList;
   return res.render("main", {
     recentMusics,
-    allMusics,
+    recommendMusics,
     playListMusics,
     googleId: process.env.GOOGLE_CLIENT_ID,
     googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
@@ -32,10 +34,17 @@ export const home = async (req, res) => {
 };
 
 export const profile = async (req, res) => {
+  let playListMusics = [];
+  if (req.session.user) {
+    const { _id: id } = req.session.user;
+    playListMusics = await User.findById(id).populate("playList");
+  }
+  playListMusics = playListMusics.playList;
   return res.render("profile", {
     googleId: process.env.GOOGLE_CLIENT_ID,
     googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
     currentPage: "Profile",
+    playListMusics,
   });
   // const { id } = req.params;
   // if (id.endsWith("google")) {
@@ -72,7 +81,25 @@ export const removeList = async (req, res) => {
 export const getSearchMusic = async (req, res) => {
   const { search } = req.query;
   //search로 검색
+  const searchedMusics = await Music.find({
+    $or: [
+      { title: { $regex: new RegExp(search, "i") } },
+      { titleEng: { $regex: new RegExp(search, "i") } },
+      { singer: { $regex: new RegExp(search, "i") } },
+      { singerEng: { $regex: new RegExp(search, "i") } },
+    ],
+  });
+  let playListMusics = [];
+  if (req.session.user) {
+    const { _id: id } = req.session.user;
+    playListMusics = await User.findById(id).populate("playList");
+  }
+  playListMusics = playListMusics.playList;
   return res.render("main", {
     currentPage: "Search",
+    googleId: process.env.GOOGLE_CLIENT_ID,
+    googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
+    searchedMusics,
+    playListMusics,
   });
 };

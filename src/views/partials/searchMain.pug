@@ -1,1 +1,9 @@
-h1 search!
+include ../mixins/result__music
+
+.searchMain__container__contents 
+  .searchMain__container__result
+    .searchMain__container__result__header 
+      span.searchMain__container__result__header__title 검색결과
+    .searchMain__container__result__music-container
+      each music in searchedMusics 
+        +result__music(music)

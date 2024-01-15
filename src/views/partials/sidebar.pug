@@ -4,15 +4,20 @@
       .sidebar__title 
         span 🎶Watermelon
       ul.sidebar__menus
-        if currentPage === "Home"
+        if currentPage === "Profile" 
+          li.sidebar__menu 
+            a(href=`/`) Home
+          li.sidebar__menu.selected
+            a(href=`/profile`) Profile
+        else if currentPage === "Home"
           li.sidebar__menu.selected
             a(href=`/`) Home
           li.sidebar__menu 
             a(href=`/profile`) Profile
-        else 
-          li.sidebar__menu 
+        else
+          li.sidebar__menu
             a(href=`/`) Home
-          li.sidebar__menu.selected
+          li.sidebar__menu 
             a(href=`/profile`) Profile
     .sidebar__playlist-container
       .sidebar__playlist-border 

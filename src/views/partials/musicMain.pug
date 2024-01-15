@@ -12,5 +12,5 @@ include ../mixins/recommend__music
     .main__container__recommend__header
       span.main__container__recommend__header__title 추천 음악
     .main__container__recommend__music-container
-      each music in allMusics 
+      each music in recommendMusics
         +recommend__music(music)

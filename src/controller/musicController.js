@@ -46,7 +46,7 @@ export const postUpload = async (req, res) => {
     console.log(error);
     return res.render("upload", { pageTitle: "Upload", error });
   }
-  return res.redirect("/");
+  return res.redirect("/setting");
 };
 
 // /music/:id
