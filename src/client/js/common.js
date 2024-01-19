@@ -1,5 +1,7 @@
 const selectedLink = document.querySelector(".selected");
 
-selectedLink.addEventListener("click", function (event) {
-  event.preventDefault();
-});
+if (selectedLink) {
+  selectedLink.addEventListener("click", function (event) {
+    event.preventDefault();
+  });
+}

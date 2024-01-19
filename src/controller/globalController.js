@@ -54,6 +54,22 @@ export const profile = async (req, res) => {
   // return res.render("profile", { pageTitle: "Profile" });
 };
 
+export const edit = async (req, res) => {
+  if (!req.session.user) return res.end();
+  const { _id: id } = req.session.user;
+  if (!id) return res.end();
+  const username = req.body.username;
+  const user = await User.findByIdAndUpdate(
+    id,
+    {
+      username,
+    },
+    { new: true }
+  );
+  req.session.user = user;
+  return res.end();
+};
+
 export const addList = async (req, res) => {
   if (!req.session.user) return res.end();
   const { _id: id } = req.session.user;
@@ -81,12 +97,15 @@ export const removeList = async (req, res) => {
 export const getSearchMusic = async (req, res) => {
   const { search } = req.query;
   //search로 검색
+  const keyword = search.toLowerCase();
   const searchedMusics = await Music.find({
     $or: [
-      { title: { $regex: new RegExp(search, "i") } },
-      { titleEng: { $regex: new RegExp(search, "i") } },
-      { singer: { $regex: new RegExp(search, "i") } },
-      { singerEng: { $regex: new RegExp(search, "i") } },
+      { title: { $regex: new RegExp(keyword, "i") } },
+      { titleEng: { $regex: new RegExp(keyword, "i") } },
+      { singer: { $regex: new RegExp(keyword, "i") } },
+      { singerEng: { $regex: new RegExp(keyword, "i") } },
+      { albumTitle: { $regex: new RegExp(keyword, "i") } },
+      { albumTitleEng: { $regex: new RegExp(keyword, "i") } },
     ],
   });
   let playListMusics = [];
@@ -101,5 +120,6 @@ export const getSearchMusic = async (req, res) => {
     googleRedirectionUrl: process.env.GOOGLE_REDIRECTION_URL,
     searchedMusics,
     playListMusics,
+    length: searchedMusics.length,
   });
 };

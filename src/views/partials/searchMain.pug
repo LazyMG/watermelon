@@ -3,7 +3,7 @@ include ../mixins/result__music
 .searchMain__container__contents 
   .searchMain__container__result
     .searchMain__container__result__header 
-      span.searchMain__container__result__header__title 검색결과
+      span.searchMain__container__result__header__title 검색결과 (#{length}개의 결과)
     .searchMain__container__result__music-container
       each music in searchedMusics 
         +result__music(music)

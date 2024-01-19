@@ -1,20 +1,29 @@
 .profile-main
-  //- if loggedIn
-  //-   h1=user.username 
-  //-   h2=user.email
-  //- else 
-  //-   h1 You should login
-  .profile-container
+  .profile-user-container
     if loggedIn 
       .profile-loggedIn
-        .profile-loggedIn__title
-          span Hello! #{user.username}
-        .profile-loggedIn__edit
-        .profile-loggedIn-logout
-          a(href=`/logout`) Logout
+        .profile-loggedIn__header
+          .profile-loggedIn__title
+            span Hello! #{user.username}
+          .profile-loggedIn-logout
+            a(href=`/logout`) Logout
+        .profile-loggedIn__edit-container
+          .profile-loggedIn__edit
+            form(method="POST" action="/edit").profile-loggedIn__form
+              input(type="text" placeholder="Username" name="username").profile-loggedIn__form-text
+              input(type="submit" value="Edit").profile-loggedIn__form-submit
+        
     else 
       .profile-unLoggedIn
         .profile-unLoggedIn__title
           span Please Login
         .profile-unLoggedIn__button 
           a(href=`https://accounts.google.com/o/oauth2/auth?client_id=${googleId}&redirect_uri=${googleRedirectionUrl}&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`) Google Login
+  .profile-music-container
+    if loggedIn 
+      .profile-music-container__content
+        //- img.profile-music-container__img
+        .profile-music-container__title Youtube 이동
+        //- .profile-music-container__singer
+    else 
+      h1 Please Login

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addList,
+  edit,
   getSearchMusic,
   home,
   play,
@@ -17,7 +18,7 @@ import {
   postJoin,
   postLogin,
 } from "../controller/userController";
-import { getUpload, postUpload, search } from "../controller/musicController";
+import { getUpload, postUpload } from "../controller/musicController";
 import {
   adminOnlyMiddleware,
   protectMiddleware,
@@ -48,6 +49,7 @@ globalRouter
 globalRouter.route("/login-google").get(getGoogleLogin).post(postGoogleLogin);
 globalRouter.get("/logout", protectMiddleware, logout);
 globalRouter.get("/profile", profile);
+globalRouter.post("/edit", edit);
 globalRouter.post("/api/addList", addList);
 globalRouter.post("/api/removeList", removeList);
 

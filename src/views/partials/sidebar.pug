@@ -24,7 +24,7 @@
       .sidebar__playlist
         if playListMusics
           each music in playListMusics
-            .sidebar__playlist-item.music(data-ytId=music.ytId data-coverimg=music.coverImg data-title=music.title data-singer=music.singer)#playlist-item
+            .sidebar__playlist-item.music(data-ytId=music.ytId data-coverimg=music.coverImg data-title=music.title data-singer=music.singer data-album=music.albumTitle)#playlist-item
               img(src=music.coverImg).sidebar__playlist-img
               .sidebar__playlist-item-container
                 .sidebar__playlist-info

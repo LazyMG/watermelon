@@ -27,7 +27,6 @@ let musicNumber = -1;
 
 const initialPlayListItem = document.querySelectorAll("#playlist-item");
 let playListMusics = [...initialPlayListItem];
-console.log(playListMusics);
 
 const createPlayBarContent = (dataset) => {
   if (document.querySelector(".player__music")) {
@@ -54,7 +53,7 @@ const createPlayBarContent = (dataset) => {
   const musicSinger = document.createElement("div");
   musicSinger.classList.add("player__music__singer");
   const singerSpan = document.createElement("span");
-  singerSpan.textContent = dataset.singer;
+  singerSpan.textContent = dataset.singer + " | " + dataset.album;
   musicSinger.appendChild(singerSpan);
 
   // 각 요소들을 연결
@@ -129,6 +128,7 @@ const handleAdd = () => {
   const playerMusic = document.querySelector(".player__music");
   if (!playerMusic) return;
   const addYtId = playerMusic.dataset.ytid;
+  const addAlbum = playerMusic.dataset.album;
   const addCoverImg = playerMusic.querySelector("img").src;
   const addTitle = playerMusic
     .querySelector(".player__music__title")
@@ -141,6 +141,7 @@ const handleAdd = () => {
     addCoverImg,
     addTitle,
     addSinger,
+    addAlbum,
   };
   let validateFlag = false;
   playListMusics.forEach((music) => {
