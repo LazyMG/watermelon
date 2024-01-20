@@ -1,8 +1,8 @@
 mixin result__music(music)
-  .searchMain__container__result__music.music(data-ytId=music.ytId,data-title=music.title,data-singer=music.singer,data-coverImg=music.coverImg)
+  .searchMain__container__result__music.music(data-ytId=music.ytId data-title=music.title data-singer=music.singer data-coverImg=music.coverImg data-album=music.albumTitle)
     img.searchMain__container__result__music__img(src=`${music.coverImg}`)
     .searchMain__container__result__music__info 
       .searchMain__container__result__music__title 
         span=music.title
       .searchMain__container__result__music__singer
-        span=music.singer
+        span #{music.singer} | #{music.albumTitle}

@@ -35,6 +35,8 @@ const createPlayBarContent = (dataset) => {
   const playerMusic = document.createElement("div");
   playerMusic.classList.add("player__music");
   playerMusic.dataset.ytid = dataset.ytid;
+  playerMusic.dataset.singer = dataset.singer;
+  playerMusic.dataset.album = dataset.album;
 
   // 자식 요소들 생성
   const musicImg = document.createElement("img");
@@ -133,9 +135,7 @@ const handleAdd = () => {
   const addTitle = playerMusic
     .querySelector(".player__music__title")
     .querySelector("span").innerText;
-  const addSinger = playerMusic
-    .querySelector(".player__music__singer")
-    .querySelector("span").innerText;
+  const addSinger = playerMusic.dataset.singer;
   const data = {
     addYtId,
     addCoverImg,
@@ -207,6 +207,7 @@ const createSidebarPlayListItem = (data) => {
   const playlistSinger = document.createElement("span");
   playlistSinger.classList.add("sidebar__playlist-singer");
   playlistSinger.textContent = data.addSinger;
+  console.log(data.addSinger);
   playlistInfo.appendChild(playlistSinger);
 
   // .sidebar__playlist-remove 요소 생성 및 추가

@@ -4,7 +4,7 @@ import "./models/Music";
 import "./models/User";
 import app from "./server";
 
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Visit http://localhost:${PORT} 🎈`);
