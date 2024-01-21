@@ -2,7 +2,7 @@ import Music from "../models/Music";
 import User from "../models/User";
 
 export const setting = async (req, res) => {
-  const musics = await Music.find({});
+  const musics = await Music.find({}).sort({ createdAt: "desc" });
   return res.render("setting", { pageTitle: "Setting", musics });
 };
 
@@ -23,6 +23,8 @@ export const home = async (req, res) => {
     playListMusics = await User.findById(id).populate("playList");
   }
   playListMusics = playListMusics.playList;
+  console.log("googleId", process.env.GOOGLE_CLIENT_ID);
+  console.log("googleRedirection", process.env.GOOGLE_REDIRECTION_URL);
   return res.render("main", {
     recentMusics,
     recommendMusics,

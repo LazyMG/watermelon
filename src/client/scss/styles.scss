@@ -373,7 +373,7 @@ input:-webkit-autofill:active {
               }
             }
             .main__container__recent__music-container {
-              width: 100%;
+              //width: 100%;
               display: flex;
               overflow-x: scroll;
               &:-webkit-scrollbar {
@@ -1133,7 +1133,7 @@ input:-webkit-autofill:active {
             }
           }
           .profile-music-container__title {
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 600;
           }
           .profile-music-container__singer {
